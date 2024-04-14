@@ -37,8 +37,7 @@ public class Button
      * @param key_id
      * - The key code of the keyboard key to use for the Button. 
      */
-    public Button(AppInput app_input, int key_id)
-    {
+    public Button(AppInput app_input, int key_id) {
         this.app_input = app_input;
         this.key_id = key_id;
     }
@@ -46,8 +45,7 @@ public class Button
     /**
      * @return the key code of the Button's keyboard key. 
      */
-    public int getKey()
-    {
+    public int getKey() {
         return key_id;
     }
 
@@ -58,19 +56,15 @@ public class Button
      * Note: A Button is considered to be active when it's detected that it's keyboard key is currently being pressed; 
      * the Button will remain active until it's been detected that its key had been released. 
      */
-    public boolean getIsActive()
-    {
+    public boolean getIsActive() {
         return current_is_active;
     }
 
-    private boolean isActive()
-    {
-        if(app_input.isKeyPressed(key_id))
-        {
+    private boolean isActive() {
+        if(app_input.isKeyPressed(key_id)) {
             current_is_active = true;
         }
-        else if(app_input.isKeyReleased(key_id))
-        {
+        else if(app_input.isKeyReleased(key_id)) {
             current_is_active = false;
         }
         
@@ -84,10 +78,8 @@ public class Button
      * 
      * @return Whether or not the button has completed any new lifetime cycles from being pressed to being released. 
      */
-    public boolean completedLifetimeUpdate()
-    {
-        if(completed_lifetime_update)
-        {
+    public boolean completedLifetimeUpdate() {
+        if(completed_lifetime_update) {
             completed_lifetime_update = false;
             return true;
         }
@@ -105,12 +97,9 @@ public class Button
      * @param mechanic
      * - The mechanic to remove. 
      */
-    public <GenericMechanic extends MechanicBase> void  removeWhenPressedMechanic(GenericMechanic mechanic)
-    {
-        for(int i = 0; i < when_pressed_mechanics.size(); i++)
-        {
-            if(when_pressed_mechanics.get(i).getMechanicID() == mechanic.getMechanicID())
-            {
+    public <GenericMechanic extends MechanicBase> void  removeWhenPressedMechanic(GenericMechanic mechanic) {
+        for(int i = 0; i < when_pressed_mechanics.size(); i++) {
+            if(when_pressed_mechanics.get(i).getMechanicID() == mechanic.getMechanicID()) {
                 when_pressed_mechanics.remove(i);
                 i--;
             }
@@ -127,12 +116,9 @@ public class Button
      * @param mechanic
      * - The mechanic to remove. 
      */
-    public <GenericMechanic extends MechanicBase> void  removeWhilePressedContinuousMechanic(GenericMechanic mechanic)
-    {
-        for(int i = 0; i < when_pressed_mechanics.size(); i++)
-        {
-            if(while_pressed_cont_mechanics.get(i).getMechanicID() == mechanic.getMechanicID())
-            {
+    public <GenericMechanic extends MechanicBase> void  removeWhilePressedContinuousMechanic(GenericMechanic mechanic) {
+        for(int i = 0; i < when_pressed_mechanics.size(); i++) {
+            if(while_pressed_cont_mechanics.get(i).getMechanicID() == mechanic.getMechanicID()) {
                 while_pressed_cont_mechanics.remove(i);
                 i--;
             }
@@ -148,12 +134,9 @@ public class Button
      * @param mechanic
      * - The mechanic to schedule and run when the button is pressed. 
      */
-    public <GenericMechanic extends MechanicBase> void whenPressed(GenericMechanic mechanic)
-    {
-        for(int i = 0; i < when_pressed_mechanics.size(); i++)
-        {
-            if(when_pressed_mechanics.get(i).getMechanicID() == mechanic.getMechanicID())
-            {
+    public <GenericMechanic extends MechanicBase> void whenPressed(GenericMechanic mechanic) {
+        for(int i = 0; i < when_pressed_mechanics.size(); i++) {
+            if(when_pressed_mechanics.get(i).getMechanicID() == mechanic.getMechanicID()) {
                 return;
             }
         }
@@ -162,7 +145,7 @@ public class Button
     }
 
     /**
-     * Used to constinuously schedule and run a mechanic as long as the button remains pressed. Moreover, this method
+     * Used to continuously schedule and run a mechanic as long as the button remains pressed. Moreover, this method
      * continues to re-schedule the mechanic once it has either been interrupted, or has naturally ended by seeing its ending condition
      * being met.  
      * 
@@ -170,42 +153,34 @@ public class Button
      * - Any mechanic instance that possesses MechanicBase as a superclass. 
      * 
      * @param mechanic
-     * - The mechanic to constinuously schedule and run while the button is being pressed. 
+     * - The mechanic to continuously schedule and run while the button is being pressed. 
      */
-    public <GenericMechanic extends MechanicBase> void whilePressedContinuous(GenericMechanic mechanic)
-    {
+    public <GenericMechanic extends MechanicBase> void whilePressedContinuous(GenericMechanic mechanic) {
         while_pressed_cont_mechanics.addLast(mechanic);
     }
 
-    private void runButtonMechanics(LinkedList<MechanicBase> mechanics)
-    {
-        for(int i = 0; i < mechanics.size(); i++)
-        {
-            if(!mechanics.get(i).isScheduled())
-            {
+    private void runButtonMechanics(LinkedList<MechanicBase> mechanics) {
+        for(int i = 0; i < mechanics.size(); i++) {
+            if(!mechanics.get(i).isScheduled()) {
                 mechanics.get(i).schedule();
             }
         }
     }
 
     /**
-     *  Used to evaluate the button's current state and activity to determine if and when mechanics binded to the button
-     * should be scheduled and ran. Moreover, if this method is continuously called,it will continuously check to see if binded mechanics
-     * can be scheduled based on the button's state. So, given that scheduling and running the binded mechanics serve as a response to 
+     *  Used to evaluate the button's current state and activity to determine if and when mechanics bounded to the button
+     * should be scheduled and ran. Moreover, if this method is continuously called,it will continuously check to see if bounded mechanics
+     * can be scheduled based on the button's state. So, given that scheduling and running the bounded mechanics serve as a response to 
      * pressing the button, continuously calling this method will ensure buttons immediately respond when pressed.  
      */
-    public void run()
-    {
+    public void run() {
         prev_is_active = current_is_active;
-
-        if(isActive() && ! prev_is_active)
-        {
+        if(isActive() && ! prev_is_active) {
             completed_lifetime_update = true;
             runButtonMechanics(when_pressed_mechanics);
         }
 
-        if(isActive())
-        {
+        if(isActive()) {
             runButtonMechanics(while_pressed_cont_mechanics);
         }
     }

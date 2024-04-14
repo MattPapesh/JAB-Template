@@ -8,7 +8,7 @@ import java.util.LinkedList;
  * 
  * @see 
  * Moreover, this mechanic is used to make use of its addMechanics(GenericMechanic... mechanics) method. this mechanic does not offer 
- * initializing, executing, or ending phases, and does not offer the use of an ending conditon! This mechanic is strictly meant for
+ * initializing, executing, or ending phases, and does not offer the use of an ending condition! This mechanic is strictly meant for
  * sequentially scheduling and running added mechanics. 
  */
 public class SequentialMechanicGroup extends MechanicBase
@@ -23,11 +23,10 @@ public class SequentialMechanicGroup extends MechanicBase
      * 
      * @see 
      * Moreover, this mechanic is used to make use of its addMechanics(GenericMechanic... mechanics) method. this mechanic does not offer 
-     * initializing, executing, or ending phases, and does not offer the use of an ending conditon! This mechanic is strictly meant for
+     * initializing, executing, or ending phases, and does not offer the use of an ending condition! This mechanic is strictly meant for
      * sequentially scheduling and running added mechanics. 
      */
-    public SequentialMechanicGroup()
-    {
+    public SequentialMechanicGroup() {
         setExecutionalPeriodicDelay(1);
         MechanicScheduler.registerMechanic(this);
     }
@@ -45,10 +44,8 @@ public class SequentialMechanicGroup extends MechanicBase
      * @param <GenericMechanic>
      * @param mechanics
      */
-    public <GenericMechanic extends MechanicBase> void addMechanics(GenericMechanic... mechanics)
-    {
-        for(int i = 0; i < mechanics.length; i++)
-        {
+    public <GenericMechanic extends MechanicBase> void addMechanics(GenericMechanic... mechanics) {
+        for(int i = 0; i < mechanics.length; i++) {
             this.group_mechanics.addLast(mechanics[i]);
         }
     }
@@ -57,19 +54,14 @@ public class SequentialMechanicGroup extends MechanicBase
     public void initialize() {}
     
     @Override
-    public void execute()
-    {
-        try
-        { 
+    public void execute() {
+        try { 
             MechanicBase current_mechanic = group_mechanics.get(current_mechanic_index);
-            
-            if(!current_mechanic.isScheduled() && current_mechanic_never_scheduled)
-            {
+            if(!current_mechanic.isScheduled() && current_mechanic_never_scheduled) {
                 current_mechanic_never_scheduled = false;
                 group_mechanics.get(current_mechanic_index).schedule();
             }
-            else if(!current_mechanic.isScheduled() && !current_mechanic_never_scheduled)
-            {
+            else if(!current_mechanic.isScheduled() && !current_mechanic_never_scheduled) {
                 current_mechanic_never_scheduled = true;
                 current_mechanic_index++;
             }
@@ -78,14 +70,7 @@ public class SequentialMechanicGroup extends MechanicBase
     }
 
     @Override
-    public void end(boolean interrupted) 
-    {
-
-    }
-
-    @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished() {
         return current_mechanic_index >= group_mechanics.size();
     }
 }

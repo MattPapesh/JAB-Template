@@ -30,38 +30,32 @@ public class Animation
      * @see
      * Note: Can utilize PNG and GIF file types. 
      */
-    public Animation(String file_name)
-    {
+    public Animation(String file_name) {
         this.file_name = file_name;
     }
 
     /**
      * @return A Image instance created from the image file specified in the constructor. 
      */
-    public Image getAnimation()
-    {
+    public Image getAnimation() {
        return new ImageIcon(getClass().getResource("/" + Constants.FILE_ROOT_DIRECTORIES.IMAGE_ROOT_DIRECTORY + file_name)).getImage();
     }
 
     /**
      * @return A ImageIcon instance created from the image file specified in the constructor. 
      */
-    private ImageIcon getImageIcon()
-    {    
+    private ImageIcon getImageIcon() {    
         return new ImageIcon(Constants.FILE_ROOT_DIRECTORIES.IMAGE_ROOT_DIRECTORY + file_name);
     }
 
     /**
      * @return A BufferedImage instance created from the image file specified in the constructor. 
      */
-    private BufferedImage getBufferedImage()
-    {
-        try
-        {
+    private BufferedImage getBufferedImage() {
+        try {
             return ImageIO.read(new File(Constants.FILE_ROOT_DIRECTORIES.IMAGE_ROOT_DIRECTORY + file_name));
         }
-        catch(IOException e) 
-        {
+        catch(IOException e) {
             System.err.println("Animation.java: IOExeception caught!");
             return null;
         }
@@ -73,14 +67,11 @@ public class Animation
      * @see
      * Note: Unit of measurement: Pixels.
      */
-    public int getImageWidth()
-    {
-        if(file_name.contains(".png"))
-        {
+    public int getImageWidth() {
+        if(file_name.contains(".png")) {
             return getBufferedImage().getWidth();  
         }
-        else if(file_name.contains(".gif"))
-        {
+        else if(file_name.contains(".gif")) {
             return getImageIcon().getIconWidth();
         }
 
@@ -93,14 +84,11 @@ public class Animation
      * @see
      * Note: Unit of measurement: Pixels.
      */
-    public int getImageHeight()
-    {
-        if(file_name.contains(".png"))
-        {
+    public int getImageHeight() {
+        if(file_name.contains(".png")) {
             return getBufferedImage().getHeight();  
         }
-        else if(file_name.contains(".gif"))
-        {
+        else if(file_name.contains(".gif")) {
             return getImageIcon().getIconHeight();
         }
 
@@ -110,8 +98,7 @@ public class Animation
     /**
      * @return The image file's name; file type included. EX: "myImage.png"
      */
-    public String getName()
-    {
+    public String getName() {
         return file_name;
     }
 }

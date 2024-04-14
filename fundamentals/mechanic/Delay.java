@@ -27,8 +27,7 @@ public class Delay extends MechanicBase
      * @param idle_mechanic
      * - The InstantMechanic to periodically and consecutively shedule on a loop during the idle period that the Delay mechanic is scheduled and running. 
      */
-    public Delay(double millis, InstantMechanic idle_mechanic)
-    {
+    public Delay(double millis, InstantMechanic idle_mechanic) {
         this.millis = millis;
         this.idle_mechanic = idle_mechanic;
         addRequirements();
@@ -36,31 +35,20 @@ public class Delay extends MechanicBase
     }   
 
     @Override
-    public void initialize() 
-    {
+    public void initialize() {
         initial_millis = MechanicScheduler.getElapsedMillis();
     }
 
     @Override
-    public void execute() 
-    {
+    public void execute() {
         delta_millis = MechanicScheduler.getElapsedMillis() - initial_millis;
-        
-        if(idle_mechanic != null)
-        {
+        if(idle_mechanic != null) {
             idle_mechanic.schedule();
         }
     }
-    
-    @Override
-    public void end(boolean interrupted) 
-    {
-        
-    }
 
     @Override
-    public boolean isFinished()
-    {   
+    public boolean isFinished() {   
         return Math.abs(delta_millis) >= millis;
     }
 }

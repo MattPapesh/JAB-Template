@@ -7,13 +7,12 @@ import javax.sound.sampled.Clip;
  * AppAudio is responsible for playing audio clips of WAV audio files with the use of the Clip & AudioFile classes. 
  * Using AppAudio, WAV files can be played once, played multiple times consecutively, and stopped at any moment. 
  */
-public class AppAudio
+public class AppAudio 
 {
     private LinkedList<AudioFile> audio_files = new LinkedList<AudioFile>();
 
     @Override
-    protected void finalize() throws Throwable 
-    {
+    protected void finalize() throws Throwable  {
         audio_files.clear();
     }
 
@@ -23,8 +22,7 @@ public class AppAudio
      * @param file_name
      * - The WAV file to play. 
      */
-    public void playAudioFile(String file_name)
-    {
+    public void playAudioFile(String file_name) {
         audio_files.addLast(new AudioFile(file_name)); 
         audio_files.getLast().getAudioClip().start();
     }
@@ -35,10 +33,8 @@ public class AppAudio
      * @param file_name
      * - The WAV file to indefinitely play. 
      */
-    public void playAudioFileLoopContinuously(String file_name)
-    {
-        if(!containsAudioFile(file_name))
-        {
+    public void playAudioFileLoopContinuously(String file_name) {
+        if(!containsAudioFile(file_name)) {
             audio_files.addLast(new AudioFile(file_name));
             audio_files.getLast().getAudioClip().loop(Clip.LOOP_CONTINUOUSLY);
         }
@@ -54,8 +50,7 @@ public class AppAudio
      * @param count
      * - The amount of times the WAV file should be consecutively played. 
      */
-    public void playAudioFileLoop(String file_name, int count)
-    {
+    public void playAudioFileLoop(String file_name, int count) {
         audio_files.addLast(new AudioFile(file_name));
         audio_files.getLast().getAudioClip().loop(count);
     }
@@ -67,12 +62,9 @@ public class AppAudio
      * @param file_name
      * - The WAV file to stop playing. 
      */
-    public void stopAudioFile(String file_name)
-    {
-        for(int i = 0; i < audio_files.size(); i++)
-        {
-            if(audio_files.get(i).getFileName() == file_name)
-            {
+    public void stopAudioFile(String file_name) {
+        for(int i = 0; i < audio_files.size(); i++) {
+            if(audio_files.get(i).getFileName() == file_name) {
                 audio_files.get(i).getAudioClip().stop();
                 audio_files.get(i).getAudioClip().close();
                 audio_files.remove(i);
@@ -85,10 +77,8 @@ public class AppAudio
      * Used to immediately stop all WAV files from playing while canceling all replays that any of the files were expected to play. Lastly, 
      * if any WAV files passed in are not currently playing, then nothing will happen to those specific files.  
      */
-    public void stopAllAudioFiles()
-    {
-        for(int i = 0; i < audio_files.size(); i++)
-        {
+    public void stopAllAudioFiles() {
+        for(int i = 0; i < audio_files.size(); i++) {
             audio_files.get(i).getAudioClip().stop();
             audio_files.get(i).getAudioClip().close();
         }
@@ -105,12 +95,9 @@ public class AppAudio
      * @return 
      *  Whether or not the WAV file in question is currently playing. 
      */
-    private boolean containsAudioFile(String file_name)
-    {
-        for(int i = 0; i < audio_files.size(); i++)
-        {
-            if(audio_files.get(i).getFileName() == file_name)
-            {
+    private boolean containsAudioFile(String file_name) {
+        for(int i = 0; i < audio_files.size(); i++) {
+            if(audio_files.get(i).getFileName() == file_name) {
                 return true;
             }
         }

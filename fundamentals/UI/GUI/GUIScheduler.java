@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * Manages all GUI and GUIOption variables through means of static methods. All instantiated GUIs that have been 
  * "registered" may have GUIOption instances. Schedulers are used to periodically return different GUI instances to continuously 
- * call their GUIOptions' run() methods, allowing GUIs to operate apropriately. Moreover, allowing these run() methods 
+ * call their GUIOptions' run() methods, allowing GUIs to operate appropriately. Moreover, allowing these run() methods 
  * to be accessed in AppBase.java to be looped for GUI functionality. 
  */
 
@@ -16,15 +16,13 @@ public class GUIScheduler
 
     /**
      * Given that a GUI's Buttons' run() method must be continuously called in order to function, the GUIScheduler needs to be able to
-     * have access to every GUI instance. All instances must be passed in for them to function apropriately. 
+     * have access to every GUI instance. All instances must be passed in for them to function appropriately. 
      * 
      * @param GUI
      * - The instance to register. 
      */
-    protected static void registerGUI(GUI GUI)
-    {
-        if(GUI != null)
-        {
+    protected static void registerGUI(GUI GUI) {
+        if(GUI != null) {
             GUIs.addLast(GUI);
         }
     }
@@ -36,12 +34,9 @@ public class GUIScheduler
      * @param GUI
      * - The registered instance to remove.
      */
-    protected static void removeGUI(GUI GUI)
-    {
-        for(int i = 0; i < GUIs.size(); i++)
-        {
-            if(GUIs.get(i).getID() == GUI.getID())
-            {
+    protected static void removeGUI(GUI GUI) {
+        for(int i = 0; i < GUIs.size(); i++) {
+            if(GUIs.get(i).getID() == GUI.getID()) {
                 GUIs.remove(i);
             }
         }
@@ -50,21 +45,17 @@ public class GUIScheduler
     /**
      * Returns a different registered GUI instance each time the method is called, and loops through the list of registered
      * GUI instances. Moreover, when the method is continuously called, and the run() method is ran from each returned instance's 
-     * GUIOptions, then all registered GUI instances will function apropriately.
+     * GUIOptions, then all registered GUI instances will function appropriately.
      * 
      * @return
      *  A different registered GUI instance each time the method is called. 
      */
-    public static GUI getGUIInstance()
-    {
+    public static GUI getGUIInstance() {
         GUI GUI = null;
-
-        if(!GUIs.isEmpty() && current_instance_index < GUIs.size())
-        {
+        if(!GUIs.isEmpty() && current_instance_index < GUIs.size()) {
             GUI = GUIs.get(current_instance_index);
         }
-        else if(!GUIs.isEmpty())
-        {
+        else if(!GUIs.isEmpty()) {
             GUI = GUIs.getFirst();
             current_instance_index = 0;
         }

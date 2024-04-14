@@ -2,11 +2,11 @@ package fundamentals.mechanic;
 
 /**
  * A variation of MechanicBase, InstantMechanics are mechanics that when instantiated, require a lambda function
- * that will describe the mechanic's behvior. 
+ * that will describe the mechanic's behavior. 
  * 
  * @see 
  * Moreover, the lambda function will be called once at the event that the InstantMechanic
- * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending conditon!
+ * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending condition!
  * The lambda function is the entire mechanic. 
  */
 public class InstantMechanic extends MechanicBase 
@@ -14,35 +14,31 @@ public class InstantMechanic extends MechanicBase
     private mechanic_behavior behavior = null;
 
     @FunctionalInterface
-    public interface mechanic_behavior 
-    {
+    public interface mechanic_behavior {
         public void behavior();  
     }
 
     /**
      * A variation of MechanicBase, InstantMechanics are mechanics that when instantiated, require a lambda function
-     * that will describe the mechanic's behvior. 
+     * that will describe the mechanic's behavior. 
      * 
      * @see 
      * Moreover, the lambda function will be called once at the event that the InstantMechanic
-     * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending conditon!
+     * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending condition!
      * The lambda function is the entire mechanic. 
      */
-    public InstantMechanic(mechanic_behavior behavior)
-    {
+    public InstantMechanic(mechanic_behavior behavior) {
         this.behavior = behavior;
     }
 
     @Override
-    public void initialize()
-    {
+    public void initialize() {
         behavior.behavior();
         this.cancel();
     }
 
     @Override
-    public boolean isFinished()
-    {
+    public boolean isFinished() {
         return false;
     }
 }

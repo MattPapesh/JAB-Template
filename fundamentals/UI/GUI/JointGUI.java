@@ -17,72 +17,53 @@ public class JointGUI extends MechanicBase
     private JointGUIInterface joint_GUI_behavior = null;
     private Controller joint_GUI_controller = null;
 
-    public JointGUI(GUI primary_GUI, GUI secondary_GUI, JointGUIInterface joint_GUI_behavior)
-    {
+    public JointGUI(GUI primary_GUI, GUI secondary_GUI, JointGUIInterface joint_GUI_behavior) {
         this.current_GUI = primary_GUI;
         this.primary_GUI = primary_GUI;
         this.secondary_GUI = secondary_GUI;
         this.joint_GUI_behavior = joint_GUI_behavior;
     }
 
-    public void enablePrimaryGUIController(boolean enable_left, boolean enable_right, boolean enable_cargo_down)
-    {
+    public void enablePrimaryGUIController(boolean enable_left, boolean enable_right, boolean enable_cargo_down) {
         primary_GUI.enablerGUIController(enable_left, enable_right, enable_cargo_down);
     }
 
-    public void enableSecondaryGUIController(boolean enable_left, boolean enable_right, boolean enable_cargo_down)
-    {
+    public void enableSecondaryGUIController(boolean enable_left, boolean enable_right, boolean enable_cargo_down) {
         secondary_GUI.enablerGUIController(enable_left, enable_right, enable_cargo_down);
     }
 
-    public void toggleActivity(boolean active)
-    {
+    public void toggleActivity(boolean active) {
         primary_GUI.toggleActivity(active);
         secondary_GUI.toggleActivity(active);
     }
 
-    public void beginJointControllerGUI(Controller controller)
-    {
+    public void beginJointControllerGUI(Controller controller) {
         joint_GUI_controller = controller;
         primary_GUI.beginControllerGUI(controller);
         super.schedule();
     }
 
-    public void endJointControllerGUI()
-    {
+    public void endJointControllerGUI() {
         primary_GUI.endControllerGUI();
         secondary_GUI.endControllerGUI();
         super.cancel();
     }
 
-    private void runJointGUI()
-    {
-        if(current_GUI == primary_GUI && joint_GUI_behavior.swapToSecondaryGUI())
-        {
+    private void runJointGUI() {
+        if(current_GUI == primary_GUI && joint_GUI_behavior.swapToSecondaryGUI()) {
             current_GUI = secondary_GUI;
-            
             primary_GUI.endControllerGUI();
             secondary_GUI.beginControllerGUI(joint_GUI_controller);
         }
-        else if(current_GUI == secondary_GUI && joint_GUI_behavior.swapToPrimaryGUI())
-        {
+        else if(current_GUI == secondary_GUI && joint_GUI_behavior.swapToPrimaryGUI()) {
             current_GUI = primary_GUI;
-
             primary_GUI.beginControllerGUI(joint_GUI_controller);
             secondary_GUI.endControllerGUI();
         }
-
     }
 
     @Override 
-    public void execute()
-    {
+    public void execute() {
         runJointGUI();
-    }
-
-    @Override
-    public boolean isFinished()
-    {
-        return false;
     }
 }

@@ -23,8 +23,7 @@ public class MechanicScheduler
      * Note: Given that the MechanicScheduler immediately begins running once the application begins running, the scheduler's elapsed
      * time can be treated as the amount of time the application as been running. 
      */
-    public static int getElapsedMillis()
-    {
+    public static int getElapsedMillis() {
         return elapsed_millis;
     }
 
@@ -36,27 +35,20 @@ public class MechanicScheduler
     * Note: This method is called by a mechanic's superclass method, schedule(). Therefore mechanics need to be scheduled
     * with the schedule() method in order to run and function appropriately. 
     */
-    protected static void registerMechanic(MechanicBase mechanic)
-    {
-        if(mechanic !=  null)
-        {
+    protected static void registerMechanic(MechanicBase mechanic) {
+        if(mechanic !=  null) {
             mechanics.addLast(mechanic);
         }
     }
 
-    public static void interruptSimultaneousComponentUtilization()
-    {
+    public static void interruptSimultaneousComponentUtilization() {
         MechanicBase primary_mechanic = mechanics.get(current_instance_index);
-
-        for(int i = 0; i < mechanics.size(); i++)
-        {
-            if(i != current_instance_index && primary_mechanic.isScheduled() && mechanics.get(i).isScheduled())
-            {
+        for(int i = 0; i < mechanics.size(); i++) {
+            if(i != current_instance_index && primary_mechanic.isScheduled() && mechanics.get(i).isScheduled()) {
                 LinkedList<Double> primary_component_IDs = primary_mechanic.getComponentIDs();
                 LinkedList<Double> secondary_component_IDs = mechanics.get(i).getComponentIDs();
 
-                if(isSharedComponentAmongMechanics(primary_component_IDs, secondary_component_IDs))
-                {
+                if(isSharedComponentAmongMechanics(primary_component_IDs, secondary_component_IDs)) {
                     mechanics.get(current_instance_index).cancel();
                     mechanics.get(i).cancel();
                     System.err.println("MechanicScheduler.java: Simultaneous component utilization among mechanics exeception! ");
@@ -66,14 +58,10 @@ public class MechanicScheduler
     }
 
     private static boolean isSharedComponentAmongMechanics(LinkedList<Double> primary_component_IDs, 
-    LinkedList<Double> secondary_component_IDs)
-    {
-        for(int current_primary_index = 0; current_primary_index < primary_component_IDs.size(); current_primary_index++)
-        {
-            for(int current_secondary_index = 0; current_secondary_index < secondary_component_IDs.size(); current_secondary_index++)
-            {
-                if(primary_component_IDs.get(current_primary_index) == secondary_component_IDs.get(current_secondary_index))
-                {
+    LinkedList<Double> secondary_component_IDs) {
+        for(int current_primary_index = 0; current_primary_index < primary_component_IDs.size(); current_primary_index++) {
+            for(int current_secondary_index = 0; current_secondary_index < secondary_component_IDs.size(); current_secondary_index++) {
+                if(primary_component_IDs.get(current_primary_index) == secondary_component_IDs.get(current_secondary_index)) {
                     return true;
                 }
             }
@@ -85,12 +73,9 @@ public class MechanicScheduler
     /**
      * Removes the mechanic passed in from the MechanicScheduler's list of registered mechanics.
      */
-    public static void removeMechanic(MechanicBase mechanic)
-    {
-        for(int i = 0; i < mechanics.size(); i++)
-        {
-            if(mechanics.get(i).getMechanicID() == mechanic.getMechanicID())
-            {
+    public static void removeMechanic(MechanicBase mechanic) {
+        for(int i = 0; i < mechanics.size(); i++) {
+            if(mechanics.get(i).getMechanicID() == mechanic.getMechanicID()) {
                 mechanics.remove(i);
             }
         }
@@ -109,7 +94,7 @@ public class MechanicScheduler
      /**
      * Returns a different registered mechanic instance each time the method is called, and loops through the list of registered
      * mechanic instances. Moreover, when the method is continuously called, and the returned instance's run() method is called,
-     * all registered mechnanic instances will function apropriately.
+     * all registered mechanic instances will function appropriately.
      * 
      * @return
      *  A different registered mechanic instance each time the method is called. 
@@ -119,17 +104,14 @@ public class MechanicScheduler
      * The refresh rate is the fixed rate of delay in milliseconds that the entire application is updated at or, in terms of 
      * methods, called at. No part of the program can ever be refreshed, updated, or called faster than this refresh rate. 
      */
-    public static MechanicBase getInstance()
-    {
+    public static MechanicBase getInstance() {
         elapsed_millis += Constants.WINDOW_CHARACTERISTICS.REFRESH_RATE_MILLIS;  
-        MechanicBase mechanic = null;   
+        MechanicBase mechanic = null; 
 
-        if(!mechanics.isEmpty() && current_instance_index < mechanics.size())
-        {
+        if(!mechanics.isEmpty() && current_instance_index < mechanics.size()) {
             mechanic = mechanics.get(current_instance_index); 
         }
-        else if(!mechanics.isEmpty())
-        {
+        else if(!mechanics.isEmpty()) {
             mechanic = mechanics.getFirst(); 
             current_instance_index = 0;
         }

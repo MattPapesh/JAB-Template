@@ -6,24 +6,20 @@ public class App extends AppBase
 
     // Use the status initiation methods here to transition between the status methods below
     @Override // This method is always periodically called, regardless of the app's current status
-    public void determineAppStatus() 
-    {   
-        if(app_container.getAppStatus())
-        {
+    public void determineAppStatus() {   
+        if(app_container.getAppStatus()) {
             super.initiateAppStatus();
             return;
         }
     }
 
     @Override 
-    public void appInit() 
-    {
+    public void appInit() {
         
     }
 
     @Override 
-    public void appPeriodic() 
-    { 
+    public void appPeriodic() { 
         
     }
 }

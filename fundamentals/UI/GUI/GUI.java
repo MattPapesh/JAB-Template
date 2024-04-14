@@ -9,7 +9,7 @@ import fundamentals.mechanic.InstantMechanic;
 /**
      *  The GUI, or Graphical User Interface, is a collection of GUIOption instances. Each GUI option is passed into the constructor 
      *  in order to run the mechanic associated with the "current" GUI option that is selected. Moreover, the GUIOption instances are listed together
-     *  and are all associated by index based on how they are passed into the contructor; the first instance passed in is index zero. Lastly,
+     *  and are all associated by index based on how they are passed into the constructor; the first instance passed in is index zero. Lastly,
      *  given that a GUIOption's superclass is the ComponentBase, each option is a component seen on-screen, where each option's behavior and their respective
      *  mechanics' behavior are controlled by the GUI
      * 
@@ -28,22 +28,17 @@ public class GUI extends AppBase
     private GUIControllerConditions button_conditions = new GUIControllerConditions(true, true, true);
     private Controller GUI_controller = null;
 
-    private InstantMechanic down_key_mechanic = new InstantMechanic(() ->
-    {
-        if(getActivity() && button_conditions != null && button_conditions.getDownCondition())
-        {
+    private InstantMechanic down_key_mechanic = new InstantMechanic(() -> {
+        if(getActivity() && button_conditions != null && button_conditions.getDownCondition()) {
             super.playAudioFile(activate_option_file_name); 
             getOptionSelected().getAssociatedMechanic().schedule();
         }
     });
 
-    private InstantMechanic left_key_mechanic = new InstantMechanic(() ->
-    {
-        if(getActivity() && button_conditions != null && button_conditions.getLeftCondition())
-        {
+    private InstantMechanic left_key_mechanic = new InstantMechanic(() -> {
+        if(getActivity() && button_conditions != null && button_conditions.getLeftCondition()) {
             int new_selected_index = getSelectedOptionIndex(); 
-            if(getSelectedOptionIndex() - 1 >= 0)
-            {
+            if(getSelectedOptionIndex() - 1 >= 0) {
                 new_selected_index--;
             }
 
@@ -52,13 +47,10 @@ public class GUI extends AppBase
         }
     });
 
-    private InstantMechanic right_key_mechanic = new InstantMechanic(() ->
-    {
-        if(getActivity() && button_conditions != null && button_conditions.getRightCondition())
-        {
+    private InstantMechanic right_key_mechanic = new InstantMechanic(() -> {
+        if(getActivity() && button_conditions != null && button_conditions.getRightCondition()) {
             int new_selected_index = getSelectedOptionIndex(); 
-            if(getSelectedOptionIndex() + 1 < getAmountOfOptions())
-            {
+            if(getSelectedOptionIndex() + 1 < getAmountOfOptions()) {
                 new_selected_index++;
             }
 
@@ -67,31 +59,26 @@ public class GUI extends AppBase
         }
     });
 
-    private class GUIControllerConditions
-    {
+    private class GUIControllerConditions {
         private boolean left_condition = true;
         private boolean right_condition = true;
         private boolean down_condition = true;
 
-        public GUIControllerConditions(boolean left_condition, boolean right_condition, boolean down_condition)
-        {
+        public GUIControllerConditions(boolean left_condition, boolean right_condition, boolean down_condition) {
             this.left_condition = left_condition;
             this.right_condition = right_condition;
             this.down_condition = down_condition;
         }
 
-        public boolean getLeftCondition()
-        {
+        public boolean getLeftCondition() {
             return left_condition;
         }
 
-        public boolean getRightCondition()
-        {
+        public boolean getRightCondition() {
             return right_condition;
         }
 
-        public boolean getDownCondition()
-        {
+        public boolean getDownCondition() {
             return down_condition;
         }
     };
@@ -99,17 +86,15 @@ public class GUI extends AppBase
     /**
      *  The GUI, or Graphical User Interface, is a collection of GUIOption instances. Each GUI option is passed into the constructor 
      *  in order to run the mechanic associated with the "current" GUI option that is selected. Moreover, the GUIOption instances are listed together
-     *  and are all associated by index based on how they are passed into the contructor; the first instance passed in is index zero. Lastly,
+     *  and are all associated by index based on how they are passed into the constructor; the first instance passed in is index zero. Lastly,
      *  given that a GUIOption's superclass is the ComponentBase, each option is a component seen on-screen, where each option's behavior and their respective
      *  mechanics' behavior are controlled by the GUI
      * 
      *  @param UI_options
      *  - All of the options that will be included and controlled by the GUI. 
      */
-    public GUI(GUIOption... UI_options)
-    {
-        for(int i = 0; i < UI_options.length; i++)
-        {
+    public GUI(GUIOption... UI_options) {
+        for(int i = 0; i < UI_options.length; i++) {
             UI_options[i].setParentGUI(this);
             this.UI_options.addLast(UI_options[i]);
         }
@@ -118,10 +103,8 @@ public class GUI extends AppBase
         toggleActivity(true);
     }
 
-    private void setComponentActivity(boolean active)
-    {
-        for(int i = 0; i < UI_options.size(); i++)
-        {
+    private void setComponentActivity(boolean active) {
+        for(int i = 0; i < UI_options.size(); i++) {
             UI_options.get(i).toggleActivity(active);
         }
     }
@@ -129,8 +112,7 @@ public class GUI extends AppBase
     /**
      * @return The current GUIOption selected in the GUI.
      */
-    public GUIOption getOptionSelected()
-    {
+    public GUIOption getOptionSelected() {
         return UI_options.get(current_selected_index);
     }
 
@@ -140,16 +122,13 @@ public class GUI extends AppBase
      * @param active
      * - The active status to set. 
      */
-    public void toggleActivity(boolean active)
-    {
-        if(!this.active && active)
-        {
+    public void toggleActivity(boolean active) {
+        if(!this.active && active) {
             this.active = true;
             setComponentActivity(true);
             GUIScheduler.registerGUI(this);
         }
-        else if(this.active && !active)
-        {
+        else if(this.active && !active) {
             this.active = false; 
             setComponentActivity(false);
             GUIScheduler.removeGUI(this);
@@ -159,29 +138,24 @@ public class GUI extends AppBase
     /**
      * @return Whether or not the GUI is currently active.
      */
-    public boolean getActivity()
-    {
+    public boolean getActivity() {
         return active;
     }
 
     /**
      * Used to return a different GUIOption instance each time this method is called. Moreover, this method 
      * will run all GUIOption instances as it cycles through all of them when returning an instance each time this 
-     * method is called. Finally, Contiuously calling this method will return GUIOptions, where the run() method can be continuously
+     * method is called. Finally, Continuously calling this method will return GUIOptions, where the run() method can be continuously
      * called from each instance returned; this will run the GUIOption, allowing the GUI, and its options, to function appropriately.
      * 
      * @return The GUIOption instance returned. 
      */
-    public GUIOption getOptionInstance()
-    {
+    public GUIOption getOptionInstance() {
         GUIOption UI_option = null; 
-
-        if(!UI_options.isEmpty() && current_instance_index < UI_options.size())
-        {
+        if(!UI_options.isEmpty() && current_instance_index < UI_options.size()) {
             UI_option = UI_options.get(current_instance_index);
         }
-        else if(!UI_options.isEmpty())
-        {
+        else if(!UI_options.isEmpty()) {
             UI_option = UI_options.getFirst();
             current_instance_index = 0;
         }
@@ -193,10 +167,8 @@ public class GUI extends AppBase
     /**
      * Used to make sure all GUIOptions are not selected. 
      */
-    public void reset()
-    {
-        for(int i = 0; i < UI_options.size(); i++)
-        {
+    public void reset() {
+        for(int i = 0; i < UI_options.size(); i++) {
             UI_options.get(i).toggleSelectedStatus(false);
         }
     }
@@ -204,31 +176,27 @@ public class GUI extends AppBase
     /**
      * @return The amount of GUIOptions. 
      */
-    public int getAmountOfOptions()
-    {
+    public int getAmountOfOptions() {
         return UI_options.size();
     }
 
     /**
      * @return The ID number associated with this GUI instance; a specific and unique value given to each GUI upon its instantiation. 
      */
-    public double getID()
-    {
+    public double getID() {
         return UI_ID;
     }
 
     /**
      * Used to select one of the GUI's GUIOptions. Moreover, only one option can be selected at a time, and so all GUIOptions are
-     * reset before selectiing the desired option based on the index passed in; the GUIOptions are listed based on index, where the list
-     * and the indeces are determine based on the order of which each GUIOption is passed into the GUI's constructor. 
+     * reset before selecting the desired option based on the index passed in; the GUIOptions are listed based on index, where the list
+     * and the indices are determined based on the order of which each GUIOption is passed into the GUI's constructor. 
      * 
      * @param index 
      * - The index associated with the GUIOption that should be selected. 
      */
-    public void setSelectedOption(int index)
-    {
-        try
-        {
+    public void setSelectedOption(int index) {
+        try {
             reset();
             UI_options.get(index).toggleSelectedStatus(true);
             current_selected_index = index;
@@ -243,8 +211,7 @@ public class GUI extends AppBase
      * Note: The GUIOption instances are indexed based on how they 
      * are passed into the GUI's constructor. 
      */
-    public int getSelectedOptionIndex()
-    {
+    public int getSelectedOptionIndex() {
         return current_selected_index;
     }
 
@@ -263,17 +230,16 @@ public class GUI extends AppBase
      *   - The condition used to determine if whether or not the down key should currently be enabled.
      * 
      *  @see Note:
-     *  This method may be continuously called to actively update the enability of each key on the controller when using the GUI.
+     *  This method may be continuously called to actively update the ability of each key on the controller when using the GUI.
      *  Otherwise, if not called continuously, this method may be used to simply just enable and disable different controller buttons. 
      */
-    public void enablerGUIController(boolean enable_left, boolean enable_right, boolean enable_down)
-    {
+    public void enablerGUIController(boolean enable_left, boolean enable_right, boolean enable_down) {
         button_conditions = new GUIControllerConditions(enable_left, enable_right, enable_down);
     }
 
     /**
      *   Used to allow the GUI to be interacted with by using three inputs from a controller. The left key, down key, and the right key. The left & right
-     *   keys are used to translate from one GUI option to another. These options are recognized as a list orderd with indeces. The left key
+     *   keys are used to translate from one GUI option to another. These options are recognized as a list ordered with indices. The left key
      *   will move down towards the option associated with index zero, and vice versa for the right key. Finally, the down key is used
      *   to "run" the currently-selected GUI option's app mechanic that it was given during the GUIOption instance's instantiation.
      * 
@@ -289,8 +255,7 @@ public class GUI extends AppBase
      *   will remove all Controller interaction mechanics from Controller button bindings!
      *  
      */
-     public void beginControllerGUI(Controller controller)
-    {
+    public void beginControllerGUI(Controller controller) {
         GUI_controller = controller;
         controller.whenDownPressed(down_key_mechanic);
         controller.whenLeftPressed(left_key_mechanic);
@@ -301,10 +266,8 @@ public class GUI extends AppBase
      * Used to remove all Controller interaction mechanics from Controller button bindings! This is required after the beginControllerGUI()
      * method has been called! This will disable Controller interaction for the GUI.
      */
-    public void endControllerGUI()
-    {
-        if(GUI_controller != null)
-        {
+    public void endControllerGUI() {
+        if(GUI_controller != null) {
             GUI_controller.removeWhenDownPressedMechanic(down_key_mechanic);
             GUI_controller.removeWhenLeftPressedMechanic(left_key_mechanic);
             GUI_controller.removeWhenRightPressedMechanic(right_key_mechanic);
@@ -324,8 +287,7 @@ public class GUI extends AppBase
      * @see
      * Note: Only WAV file types can be used!
      */
-    public void setAudio(String next_option_file_name, String activate_option_file_name)
-    {
+    public void setAudio(String next_option_file_name, String activate_option_file_name) {
         this.next_option_file_name = next_option_file_name;
         this.activate_option_file_name = activate_option_file_name;
     }

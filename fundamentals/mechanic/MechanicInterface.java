@@ -1,7 +1,7 @@
 package fundamentals.mechanic;
 
 /**
- * MechanicInterface is the interface for MechanicBase. MechanicInterface houses declorations for the four methods that make up
+ * MechanicInterface is the interface for MechanicBase. MechanicInterface houses declarations for the four methods that make up
  * the basis of every mechanic. Moreover, every mechanic has the following phases: initialization, execution, the ending condition, 
  * and the ending once the ending condition is met. 
  */
@@ -33,11 +33,11 @@ public interface MechanicInterface
      * allow the method to behave differently based on if the method ended naturally, or if it was suddenly interrupted and canceled. 
      * 
      * @param interrupted
-     * - Whether or not if the mechanic has been interrupted by a cancelation when finishing, or if the mechanic's
+     * - Whether or not if the mechanic has been interrupted by a cancellation when finishing, or if the mechanic's
      * ending condition has been met, allowing it to end naturally. 
      * 
      * @see
-     * Note: Calling MechanicBase's cancel() method will immediately put a scheduled and running mechanic to a haulting stop.
+     * Note: Calling MechanicBase's cancel() method will immediately put a scheduled and running mechanic to a halting stop.
      * This will be considered in interruption and cause the parameter to pass in as true, where a ending where isFinished() returns true
      * will result in the parameter to pass in as false. 
      */

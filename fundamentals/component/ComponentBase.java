@@ -9,10 +9,10 @@ import fundamentals.animation.Animation;
 /**
  * The superclass to every app component. ComponentBase allows component classes to inherit methods for setting its image's
  * Coordinates, Animation, opacity, and activity. It is required of every component to extend ComponentBase as a superclass while 
- * calling the addRequirements(int x, int y, int degrees, Animation... animations) function for apropriate functionality.
+ * calling the addRequirements(int x, int y, int degrees, Animation... animations) function for appropriate functionality.
  * 
  * @see
- * Note: When ComponentBase is used as a superclass and it is extended to a sublcass, that component subclass will immediately create 
+ * Note: When ComponentBase is used as a superclass and it is extended to a subclass, that component subclass will immediately create 
  * its image on screen upon instantiation.   
  */
 public class ComponentBase 
@@ -25,8 +25,8 @@ public class ComponentBase
     private boolean active = false;
 
     /**
-     * Once ComponentBase has been extended and become a superclass to a sublcass, the subclass must call 
-     * this method in order for the subclass to apropriately function as a app component. Moreover, the initial on-screen
+     * Once ComponentBase has been extended and become a superclass to a subclass, the subclass must call 
+     * this method in order for the subclass to appropriately function as a app component. Moreover, the initial on-screen
      * coordinates of the component must be passed in; along with the component's rotation relative to the X-axis. Lastly, 
      * all Animation instances must be passed in. Animations will be PNGs or GIFs, and multiple can be passed into the parameters; 
      * these animations will be considered as all of the visual representations that the component can have at any time when
@@ -35,13 +35,10 @@ public class ComponentBase
      * @see
      * Note: Animation is a vague term referring to any PNG or GIF image. 
      */
-    public void addRequirements(int x, int y, int degrees, Animation... animations)
-    {
+    public void addRequirements(int x, int y, int degrees, Animation... animations) {
         current_animation = animations[0];
         coordinates.setCoordinates(x, y, degrees);
-
-        for(int i = 0; i < animations.length; i++)
-        {
+        for(int i = 0; i < animations.length; i++) {
             this.animations.addLast(animations[i]);
         }
 
@@ -55,12 +52,9 @@ public class ComponentBase
      * @see
      * Note: If the method is never called, the image belonging to the first Animation instance passed into the constructor will be used.
      */
-    public void setAnimation(String animation_name)
-    {
-        for(int i = 0; i < animations.size(); i++)
-        {
-            if(animations.get(i).getName() == animation_name)
-            {
+    public void setAnimation(String animation_name) {
+        for(int i = 0; i < animations.size(); i++) {
+            if(animations.get(i).getName() == animation_name) {
                 current_animation = animations.get(i);
             }
         }
@@ -75,8 +69,7 @@ public class ComponentBase
      * @see
      * Note: The perentage representation as a decimal must be a value within the interval: [0, 1].
      */
-    public void setOpacity(double pct)
-    {
+    public void setOpacity(double pct) {
         opacity_pct = pct;
     }
 
@@ -86,8 +79,7 @@ public class ComponentBase
      * @see
      * Note: The value returned will be within the interval: [0, 1].
      */
-    public double getOpacicty()
-    {
+    public double getOpacicty() {
         return opacity_pct;
     }
 
@@ -97,15 +89,12 @@ public class ComponentBase
      * @param active
      * - The new toggled active state for the controller.
      */
-    public void toggleActivity(boolean active)
-    {
-        if(!this.active && active)
-        {
+    public void toggleActivity(boolean active) {
+        if(!this.active && active) {
             this.active = true;
             //ComponentScheduler.registerComponent(this);
         }
-        else if(this.active & !active)
-        {
+        else if(this.active & !active) {
             this.active = false; 
             //ComponentScheduler.removeComponent(this);
         }
@@ -114,32 +103,28 @@ public class ComponentBase
     /**
      *  Sets the component's coordinates.
      */
-    public void setCoordinates(int x, int y, int degrees)
-    {
+    public void setCoordinates(int x, int y, int degrees) {
         coordinates.setCoordinates(x, y, degrees);
     }
 
     /**
      * @return The component's coordinates. 
      */
-    public Coordinates getCoordinates()
-    {
+    public Coordinates getCoordinates() {
         return coordinates;
     }
 
     /**
      * @return The component's personal ID; a specific and unique value that is assigned upon instantiation.
      */
-    public double getComponentID()
-    {
+    public double getComponentID() {
         return COMPONENT_ID;
     }
 
     /**
      * @return An Image instance from the animation/image that the component is currently using. 
      */
-    public Image getAnimation()
-    {
+    public Image getAnimation() {
         return current_animation.getAnimation();
     }
 
@@ -150,8 +135,7 @@ public class ComponentBase
      * @see
      * Note: Unit of measurement: Pixels.
      */
-    public int getWidth()
-    {
+    public int getWidth() {
         return current_animation.getImageWidth();
     }
 
@@ -161,16 +145,14 @@ public class ComponentBase
      * @see
      * Note: Unit of measurement: Pixels.
      */
-    public int getHeight()
-    {
+    public int getHeight() {
         return current_animation.getImageHeight();
     }
 
     /**
      * @return The activity status of the component. 
      */
-    public boolean getActivity()
-    {
+    public boolean getActivity() {
         return active;
     }
 }

@@ -31,18 +31,12 @@ public class AppGraphics extends JPanel
     public AppGraphics() {}
 
     @Override
-    protected void paintComponent(Graphics graphics)
-    {
+    protected void paintComponent(Graphics graphics) {
         Graphics2D graphics_2d = (Graphics2D)graphics;
-
-        for(int i = 0; i < ComponentScheduler.getComponents().size(); i++)
-        {
-            try
-            {
+        for(int i = 0; i < ComponentScheduler.getComponents().size(); i++) {
+            try {
                 ComponentBase current_component = ComponentScheduler.getComponents().get(i);
-            
-                if(current_component.getActivity())
-                {
+                if(current_component.getActivity()) {
                     int x = current_component.getCoordinates().getX() - (current_component.getWidth() / 2);
                     int y = current_component.getCoordinates().getY() - (current_component.getHeight() / 2);    
 

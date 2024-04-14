@@ -38,8 +38,7 @@ public class GUIOption extends ComponentBase
      */
 
     public <GenericMechanic extends MechanicBase> GUIOption(String idle_file_name, String selected_file_name, int x, int y, 
-    GenericMechanic mechanic)
-    {
+    GenericMechanic mechanic) {
         LinkedList<Animation> UI_options = getAnimations(new String[]{idle_file_name, selected_file_name});
         
         UI_option[0] = new Animation(idle_file_name);
@@ -49,14 +48,7 @@ public class GUIOption extends ComponentBase
         this.selected_file_names.addLast(selected_file_name);
         this.mechanic = (MechanicBase)mechanic;
 
-        addRequirements
-        (
-            x, 
-            y, 
-            0, 
-            getAnimationsArray(UI_options)
-        );
-
+        addRequirements(x, y, 0, getAnimationsArray(UI_options));
         setAnimation(UI_option[0].getName());
     }  
 
@@ -79,8 +71,7 @@ public class GUIOption extends ComponentBase
      */
 
     public <GenericMechanic extends MechanicBase> GUIOption(String[] idle_file_names, String[] selected_file_names, int x, int y, 
-    GenericMechanic mechanic)
-    {
+    GenericMechanic mechanic) {
         LinkedList<Animation> UI_options = getAnimations(idle_file_names);
         UI_options.addAll(getAnimations(selected_file_names));
 
@@ -91,14 +82,7 @@ public class GUIOption extends ComponentBase
         this.selected_file_names = appendFileNames(this.selected_file_names, selected_file_names);
         this.mechanic = (MechanicBase)mechanic;
 
-        addRequirements
-        (
-            x, 
-            y, 
-            0, 
-            getAnimationsArray(UI_options)
-        );
-
+        addRequirements(x, y, 0, getAnimationsArray(UI_options));
         setAnimation(UI_option[0].getName());
     }  
 
@@ -122,8 +106,7 @@ public class GUIOption extends ComponentBase
 
 
     public <GenericMechanic extends MechanicBase> GUIOption(String[] idle_file_names, String selected_file_name, int x, int y, 
-    GenericMechanic mechanic)
-    {
+    GenericMechanic mechanic) {
         LinkedList<Animation> UI_options = getAnimations(idle_file_names);
         UI_options.addAll(getAnimations(new String[]{selected_file_name}));
 
@@ -134,14 +117,7 @@ public class GUIOption extends ComponentBase
         this.selected_file_names.addLast(selected_file_name);
         this.mechanic = (MechanicBase)mechanic;
 
-        addRequirements
-        (
-            x, 
-            y, 
-            0, 
-            getAnimationsArray(UI_options)
-        );
-
+        addRequirements(x, y, 0, getAnimationsArray(UI_options));
         setAnimation(UI_option[0].getName());
     } 
 
@@ -164,8 +140,7 @@ public class GUIOption extends ComponentBase
      */
 
     public <GenericMechanic extends MechanicBase> GUIOption(String idle_file_name, String[] selected_file_names, int x, int y, 
-    GenericMechanic mechanic)
-    {
+    GenericMechanic mechanic) {
         LinkedList<Animation> UI_options = getAnimations(new String[]{idle_file_name});
         UI_options.addAll(getAnimations(selected_file_names));
 
@@ -176,44 +151,30 @@ public class GUIOption extends ComponentBase
         this.selected_file_names = appendFileNames(this.selected_file_names, selected_file_names);
         this.mechanic = (MechanicBase)mechanic;
 
-        addRequirements
-        (
-            x, 
-            y, 
-            0, 
-            getAnimationsArray(UI_options)
-        );
-
+        addRequirements(x, y, 0, getAnimationsArray(UI_options));
         setAnimation(UI_option[0].getName());
     } 
 
-    private Animation[] getAnimationsArray(LinkedList<Animation> animations)
-    {
+    private Animation[] getAnimationsArray(LinkedList<Animation> animations) {
         Animation[] animations_array = new Animation[animations.size()];
-
-        for(int i = 0; i < animations.size(); i++)
-        {
+        for(int i = 0; i < animations.size(); i++) {
             animations_array[i] = animations.get(i);
         }
 
         return animations_array;
     }
 
-    private LinkedList<Animation> getAnimations(String[] file_names)
-    {
+    private LinkedList<Animation> getAnimations(String[] file_names) {
         LinkedList<Animation> animations = new LinkedList<Animation>();
-
-        for(int i = 0; i < file_names.length; i++)
-        {
+        for(int i = 0; i < file_names.length; i++) {
             animations.addLast(new Animation(file_names[i]));
         }
+
         return animations;
     }
 
-    private LinkedList<String> appendFileNames(LinkedList<String> list, String... file_names)
-    {
-        for(int i = 0; i < file_names.length; i++)
-        {
+    private LinkedList<String> appendFileNames(LinkedList<String> list, String... file_names) {
+        for(int i = 0; i < file_names.length; i++) {
             list.addLast(file_names[i]);
         }
 
@@ -224,14 +185,11 @@ public class GUIOption extends ComponentBase
      * Cycles through all images used for the GUIOption's visual representation on-screen when the option is not "selected".
      * This allows different images to represent the option when it is "idle".
      */
-    public void useNextIdleImage()
-    {
-        if(current_idle_file_index + 1 < idle_file_names.size())
-        {
+    public void useNextIdleImage() {
+        if(current_idle_file_index + 1 < idle_file_names.size()) {
             current_idle_file_index++;
         }
-        else
-        {
+        else {
             current_idle_file_index = 0;
         }
 
@@ -243,14 +201,11 @@ public class GUIOption extends ComponentBase
      * Cycles through all images used for the GUIOption's visual representation on-screen when the option is not "idle".
      * This allows different images to represent the option when it is "selected".
      */
-    public void useNextSelectedImage()
-    {
-        if(current_selected_file_index + 1 < selected_file_names.size())
-        {
+    public void useNextSelectedImage() {
+        if(current_selected_file_index + 1 < selected_file_names.size()) {
             current_selected_file_index++;
         }
-        else
-        {
+        else {
             current_selected_file_index = 0;
         }
 
@@ -262,8 +217,7 @@ public class GUIOption extends ComponentBase
      * @return The Animation that possesses the image that currently is used for the visual representation of the GUIOption on-screen
      *  when the option is "idle".
      */
-    public Animation getIdleAnimation()
-    {
+    public Animation getIdleAnimation() {
         return UI_option[0];
     } 
 
@@ -271,47 +225,40 @@ public class GUIOption extends ComponentBase
      * @return The Animation that possesses the image that currently is used for the visual representation of the GUIOption on-screen
      *  when the option is "selected".
      */
-    public Animation getSelectedAnimation()
-    {
+    public Animation getSelectedAnimation() {
         return UI_option[1];
     }
 
     /**
      *  @return The mechanic that was passed into the constructor.
      */
-    public MechanicBase getAssociatedMechanic()
-    {
+    public MechanicBase getAssociatedMechanic() {
         return mechanic;
     }
 
     /**
      *  @return Whether or not this instance of GUIOption is "selected".
      */
-    public boolean getSelectedStatus()
-    {
+    public boolean getSelectedStatus() {
         return is_selected;
     }
 
-    protected void setParentGUI(GUI GUI)
-    {
+    protected void setParentGUI(GUI GUI) {
         parent_GUI = GUI;
     }
 
     /**
      * @return The GUI that possesses this instance of GUIOption.
      */
-    public GUI getParentGUI()
-    {
+    public GUI getParentGUI() {
         return parent_GUI;
     }
 
     /**
      * Determines whether or not the GUIOption is currently "selected".
      */
-    public void toggleSelectedStatus(boolean is_selected)
-    {
-        if(this.is_selected != is_selected)
-        {
+    public void toggleSelectedStatus(boolean is_selected) {
+        if(this.is_selected != is_selected) {
             this.is_selected = is_selected;
             update = true;
         }
@@ -321,16 +268,13 @@ public class GUIOption extends ComponentBase
      * Allows the GUIOption to operate appropriately when continuously called. This method should only be called from 
      * GUIScheduler.java, by AppBase.java
      */
-    public void run()
-    {
-        if(is_selected && update)
-        {
+    public void run() {
+        if(is_selected && update) {
             System.err.println(UI_option[1].getName());
             setAnimation(UI_option[1].getName());
             update = false;
         }
-        else if(update)
-        {
+        else if(update) {
             setAnimation(UI_option[0].getName());
             update = false; 
         }

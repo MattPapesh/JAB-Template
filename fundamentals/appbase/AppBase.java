@@ -18,9 +18,9 @@ import fundamentals.mechanic.MechanicBase;
 import fundamentals.mechanic.MechanicScheduler;
 
 /**
- * The base of every applictation. AppBase is what generates the application's window by using JFrame as its
+ * The base of every application. AppBase is what generates the application's window by using JFrame as its
  * superclass, while making use of AppGraphics, AppInput, AppAudio. Furthermore, every application is a program that
- * contiuously loops until the window is closed, and so AppBase is responsible for continuously running GUIs, Controllers,
+ * continuously loops until the window is closed, and so AppBase is responsible for continuously running GUIs, Controllers,
  * Mechanics, and Components from their respective Scheduler classes. Moreover, AppBase must be extended as the superclass
  * of App.java & AppContainer.java to return Controller instances, run app audio, and to determine the application's current
  * status. 
@@ -39,30 +39,23 @@ public class AppBase extends JFrame implements AppInterface
     
     private boolean determined_app_status = false;
 
-    private interface prioritizedAppStatus
-    {
+    private interface prioritizedAppStatus {
         public void prioritizedInit();
         public void prioritizedPeriodic();
         public int getStatusID();
     };
 
-    private void prepareAppIcon()
-    {
-        for(int i = 0; i < Constants.WINDOW_CHARACTERISTICS.APP_ICON_IMAGES.length; i++)
-        {
+    private void prepareAppIcon() {
+        for(int i = 0; i < Constants.WINDOW_CHARACTERISTICS.APP_ICON_IMAGES.length; i++) {
             icons.addLast(new Animation(Constants.WINDOW_CHARACTERISTICS.APP_ICON_IMAGES[i]).getAnimation());
         }
     }
 
-    private void updateIconImage(int update_delay_millis)
-    {
-        if(MechanicScheduler.getElapsedMillis() % update_delay_millis == 0)
-        {
+    private void updateIconImage(int update_delay_millis) {
+        if(MechanicScheduler.getElapsedMillis() % update_delay_millis == 0) {
             super.setIconImage(icons.get(current_icon_index));
             current_icon_index++;
-            
-            if(current_icon_index >= icons.size())
-            {
+            if(current_icon_index >= icons.size()) {
                 current_icon_index = 0;
             }
         }
@@ -71,14 +64,10 @@ public class AppBase extends JFrame implements AppInterface
     /**
      * Must be called once to begin running the application. 
      */
-    public void startApp()
-    {
+    public void startApp() {
         appBaseInit();
-
-        while(true)
-        {
-            try
-            {
+        while(true) {
+            try {
                 appBasePeriodic();
                 Thread.sleep(Constants.WINDOW_CHARACTERISTICS.REFRESH_RATE_MILLIS);
             }
@@ -89,10 +78,9 @@ public class AppBase extends JFrame implements AppInterface
     /**
      * Is called once to serve as initialization before running the application. 
      */
-    private void appBaseInit()
-    {
+    private void appBaseInit() {
         prepareAppIcon();
-        
+
         super.setSize(Constants.WINDOW_CHARACTERISTICS.WINDOW_WIDTH, Constants.WINDOW_CHARACTERISTICS.WINDOW_HEIGHT);
         super.setResizable(false);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,8 +102,7 @@ public class AppBase extends JFrame implements AppInterface
      * @see
      *  Note: Only WAV audio files are compatible. 
      */
-    public static void playAudioFile(String file_name)
-    {
+    public static void playAudioFile(String file_name) {
         app_audio.playAudioFile(file_name);
     }
 
@@ -131,8 +118,7 @@ public class AppBase extends JFrame implements AppInterface
      * @see
      *  Note: Only WAV audio files are compatible. 
      */
-    public static void playAudioFileLoop(String file_name, int count)
-    {
+    public static void playAudioFileLoop(String file_name, int count) {
         app_audio.playAudioFileLoop(file_name, count);
     }
 
@@ -152,8 +138,7 @@ public class AppBase extends JFrame implements AppInterface
      *  Note: Audio that is continuously looped will only stop playing by calling the 
      *  stopAudioFile(String file_name) method!
      */
-    public static void playAudioFileLoopContinuously(String file_name)
-    {
+    public static void playAudioFileLoopContinuously(String file_name) {
         app_audio.playAudioFileLoopContinuously(file_name);
     }
 
@@ -168,8 +153,7 @@ public class AppBase extends JFrame implements AppInterface
      * @see
      *  Note: Only WAV audio files are compatible. 
      */
-    public static void stopAudioFile(String file_name)
-    {
+    public static void stopAudioFile(String file_name) {
         app_audio.stopAudioFile(file_name);
     }
 
@@ -180,8 +164,7 @@ public class AppBase extends JFrame implements AppInterface
      * @see
      *  Note: Only WAV audio files are compatible. 
      */
-    public static void stopAllAudioFiles()
-    {
+    public static void stopAllAudioFiles() {
         app_audio.stopAllAudioFiles();
     } 
 
@@ -210,52 +193,39 @@ public class AppBase extends JFrame implements AppInterface
      * @return
      *  A new Controller instance that possesses the intended keyboard keys in a WASD format.  
      */
-    public Controller getController(int left_key_id, int right_key_id, int up_key_id, int down_key_id)
-    {
+    public Controller getController(int left_key_id, int right_key_id, int up_key_id, int down_key_id) {
         return new Controller(app_input, left_key_id, right_key_id, up_key_id, down_key_id);
     }
 
-    private void runMechanics()
-    {
+    private void runMechanics() {
         MechanicBase mechanic = MechanicScheduler.getInstance();
         //MechanicScheduler.interruptSimultaneousComponentUtilization();
 
-        if(mechanic != null)
-        {
+        if(mechanic != null) {
             mechanic.run();
         }
     }
 
-    private void runGUIs()
-    {
+    private void runGUIs() {
         GUI GUI = GUIScheduler.getGUIInstance(); 
-
-        for(int i = 0; GUI != null && i < GUI.getAmountOfOptions(); i++)
-        {
+        for(int i = 0; GUI != null && i < GUI.getAmountOfOptions(); i++) {
             GUI.getOptionInstance().run();
         }
     }
 
-    private void runControllers()
-    {
+    private void runControllers() {
         Controller controller = ControllerScheduler.getControllerInstance();
-
-        for(int i = 0; controller != null && i < controller.getAmountOfButtons(); i++)
-        {
+        for(int i = 0; controller != null && i < controller.getAmountOfButtons(); i++) {
             controller.getButtonInstance().run();
         }
     }
 
     // Periodically called by app refresh rate (tick system)
-    private void appBasePeriodic()
-    {
-        try
-        {
+    private void appBasePeriodic() {
+        try {
             updateIconImage(1000);
             determineAppStatus();
-
-            if(prev_app_status == null || prev_app_status.getStatusID() != app_status.getStatusID())
-            {
+            if(prev_app_status == null || prev_app_status.getStatusID() != app_status.getStatusID()) {
                 app_status.prioritizedInit(); 
             }
 
@@ -271,10 +241,8 @@ public class AppBase extends JFrame implements AppInterface
      * The application can possess different statuses at different times. This method is called
      * to assign the "menu status" as the application's current status. 
      */
-    public void initiateAppStatus()
-    {
+    public void initiateAppStatus() {
         prev_app_status = app_status;
-        
         app_status = new prioritizedAppStatus() {
 
             @Override public void prioritizedInit() { appInit(); }
@@ -288,13 +256,11 @@ public class AppBase extends JFrame implements AppInterface
      * and any of the initiaite status methods will need to be called to put the application into an active state
      * again. 
      */
-    private void resetAppStatuses()
-    {
+    private void resetAppStatuses() {
         determined_app_status = false;
     }
 
     @Override public void determineAppStatus() {}
-
     public boolean getAppStatus() { return determined_app_status; }
     @Override public void appInit() {}
     @Override public void appPeriodic() {}
@@ -308,8 +274,7 @@ public class AppBase extends JFrame implements AppInterface
      * WARNING: This method only enables the application to possess the mentioned status, BUT the method DOES NOT
      * PUT the application into the status mentioned; the initiate status methods must be used to transition between statuses!
      */
-    public void enableMenuStatus() 
-    { 
+    public void enableMenuStatus() { 
         resetAppStatuses();
         determined_app_status = true; 
     }
