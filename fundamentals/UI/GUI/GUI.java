@@ -7,15 +7,12 @@ import fundamentals.appbase.AppBase;
 import fundamentals.mechanic.InstantMechanic;
 
 /**
-     *  The GUI, or Graphical User Interface, is a collection of GUIOption instances. Each GUI option is passed into the constructor 
-     *  in order to run the mechanic associated with the "current" GUI option that is selected. Moreover, the GUIOption instances are listed together
-     *  and are all associated by index based on how they are passed into the constructor; the first instance passed in is index zero. Lastly,
-     *  given that a GUIOption's superclass is the ComponentBase, each option is a component seen on-screen, where each option's behavior and their respective
-     *  mechanics' behavior are controlled by the GUI
-     * 
-     *  @param UI_options
-     *  - All of the options that will be included and controlled by the GUI. 
-     */
+ *  The Graphical User Interface (GUI), is a collection of GUIOption instances. Each GUI option is passed into the constructor 
+ *  in order to run the mechanic associated with the "current" GUI option that is selected. Moreover, the GUIOption instances are listed together
+ *  and are all associated by index based on how they are passed into the constructor; the first instance passed in is index zero. Lastly,
+ *  given that a GUIOption's superclass is the ComponentBase, each option is a component seen on-screen, where each option's behavior and their respective
+ *  mechanics' behavior are controlled by the GUI.
+ */
 public class GUI extends AppBase
 {
     private final double UI_ID = Math.random();

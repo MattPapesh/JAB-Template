@@ -27,22 +27,12 @@ public class Controller
      * the status of each key in a controller can be determined with this class while also assigning mechanics to keys; either scheduling
      * each keys' respective mechanic once or continuously when finished whenever a key is pressed. 
      * 
-     * @param app_input
-     * - An AppInput instance that will be used to constantly read the status of each key. 
-     * 
-     * @param left_key_id
-     * - The key code for the left key in a WASD format
-     * 
-     * @param right_key_id
-     * - The key code for the right key in a WASD format
-     * 
-     * @param up_key_id
-     * - The key code for the up/up key in a WASD format
-     * 
-     * @param down_key_id
-     * - The key code for the down/down key in a WASD format
+     * @param app_input (AppInput) : The specified AppInput instance. 
+     * @param left_key_id (int) : The specified key code for the left key.
+     * @param right_key_id (int) : The specified key code for the right key. 
+     * @param up_key_id (int) : The specified key code for the up key. 
+     * @param down_key_id (int) : The specified key code for the down key. 
      */
-    
     public Controller(AppInput app_input, int left_key_id, int right_key_id, int up_key_id, int down_key_id) {
         left_key = new Button(app_input, left_key_id);
         right_key = new Button(app_input, right_key_id);
@@ -54,25 +44,23 @@ public class Controller
     }
 
     private void appendButtons(Button... buttons) {
-        for(int i = 0; i < buttons.length; i++) {
-            this.buttons.addLast(buttons[i]);
+        for(var button : buttons) {
+            this.buttons.addLast(button);
         }
     }
 
     /**
      * Toggles the controller's activity to either be enabled or disabled.
-     * 
-     * @param active
-     * - The new toggled active state for the controller.
+     * @param active (boolean) : The new toggled active state for the controller.
      */
     public void toggleActivity(boolean active) {
         if(!this.active && active) {
             this.active = true;
-            ControllerScheduler.registerController(this);
+            ControllerScheduler.getInstance().registerController(this);
         }
         else if(this.active & !active) {
             this.active = false; 
-            ControllerScheduler.removeController(this);
+            ControllerScheduler.getInstance().removeController(this);
         }
     }
 
@@ -109,13 +97,9 @@ public class Controller
      * Used to remove a mechanic that is scheduled while the left keyboard key is continuously pressed. 
      * (Mechanics that were passed into the whileLeftPressedContinuous(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhileLeftPressedContinuousMechanic(GenericMechanic mechanic) {
+    public void removeWhileLeftPressedContinuousMechanic(MechanicBase mechanic) {
         left_key.removeWhilePressedContinuousMechanic(mechanic);
     }
 
@@ -123,13 +107,9 @@ public class Controller
      * Used to remove a mechanic that is scheduled when the left keyboard key is pressed. 
      * (Mechanics that were passed into the whenLeftPressed(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhenLeftPressedMechanic(GenericMechanic mechanic) {
+    public void removeWhenLeftPressedMechanic(MechanicBase mechanic) {
         left_key.removeWhenPressedMechanic(mechanic);
     }
 
@@ -137,27 +117,19 @@ public class Controller
      * A mechanic will be scheduled while the left key is pressed. The mechanic will continuously be re-scheduled 
      * upon ending as long as the key is still being pressed; continuously running the mechanic in a looped fashion.
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled while the left key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled while the left key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whileLeftPressedContinuous(GenericMechanic mechanic) {
+    public void whileLeftPressedContinuous(MechanicBase mechanic) {
         left_key.whilePressedContinuous(mechanic);
     }
 
     /**
      * A mechanic will be scheduled when the left key is pressed. The mechanic will only be scheduled
-     *  once for every time the key is pressed. 
+     * once for every time the key is pressed. 
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled once whenever the left key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled once whenever the left key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whenLeftPressed(GenericMechanic mechanic) {
+    public void whenLeftPressed(MechanicBase mechanic) {
         left_key.whenPressed(mechanic);
     }
 
@@ -169,7 +141,7 @@ public class Controller
     }
 
     /**
-     *  A keyboard key is either pressed or it is not. The "lifetime" of a key is from when an idle key becomes pressed, and then it
+     * A keyboard key is either pressed or it is not. The "lifetime" of a key is from when an idle key becomes pressed, and then it
      * is released. Moreover, this method is responsible for determining whether or not the right key lifetime (started by a press) was completed. 
      * (ended with a release)
      * 
@@ -183,13 +155,9 @@ public class Controller
      * Used to remove a mechanic that is scheduled while the right keyboard key is continuously pressed. 
      * (Mechanics that were passed into the whileRightPressedContinuous(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhileRightPressedContinuousMechanic(GenericMechanic mechanic) {
+    public void removeWhileRightPressedContinuousMechanic(MechanicBase mechanic) {
         right_key.removeWhilePressedContinuousMechanic(mechanic);
     }
 
@@ -197,13 +165,9 @@ public class Controller
      * Used to remove a mechanic that is scheduled when the right keyboard key is pressed. 
      * (Mechanics that were passed into the whenRightPressed(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhenRightPressedMechanic(GenericMechanic mechanic) {
+    public void removeWhenRightPressedMechanic(MechanicBase mechanic) {
         right_key.removeWhenPressedMechanic(mechanic);
     }
 
@@ -211,27 +175,19 @@ public class Controller
      * A mechanic will be scheduled while the right key is pressed. The mechanic will continuously be re-scheduled 
      * upon ending as long as the key is still being pressed; continuously running the mechanic in a looped fashion.
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled while the right key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled while the right key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whileRightPressedContinuous(GenericMechanic mechanic) {
+    public void whileRightPressedContinuous(MechanicBase mechanic) {
         right_key.whilePressedContinuous(mechanic);
     }
 
     /**
      * A mechanic will be scheduled when the right key is pressed. The mechanic will only be scheduled
-     *  once for every time the key is pressed. 
+     * once for every time the key is pressed. 
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled once whenever the right key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled once whenever the right key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whenRightPressed(GenericMechanic mechanic) {
+    public void whenRightPressed(MechanicBase mechanic) {
         right_key.whenPressed(mechanic);
     }
 
@@ -239,13 +195,9 @@ public class Controller
      * Used to remove a mechanic that is scheduled while the up/up keyboard key is continuously pressed. 
      * (Mechanics that were passed into the whileUpPressedContinuous(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhileUpPressedContinuousMechanic(GenericMechanic mechanic) {
+    public void removeWhileUpPressedContinuousMechanic(MechanicBase mechanic) {
         up_key.removeWhilePressedContinuousMechanic(mechanic);
     }
 
@@ -253,13 +205,9 @@ public class Controller
      * Used to remove a mechanic that is scheduled when the up/up keyboard key is pressed. 
      * (Mechanics that were passed into the whenUpPressed(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhenUpPressedMechanic(GenericMechanic mechanic) {
+    public void removeWhenUpPressedMechanic(MechanicBase mechanic) {
         up_key.removeWhenPressedMechanic(mechanic);
     }
 
@@ -285,27 +233,19 @@ public class Controller
      * A mechanic will be scheduled while the up/up key is pressed. The mechanic will continuously be re-scheduled 
      * upon ending as long as the key is still being pressed; continuously running the mechanic in a looped fashion.
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled while the up/up key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled while the up/up key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whileUpPressedContinuous(GenericMechanic mechanic) {
+    public void whileUpPressedContinuous(MechanicBase mechanic) {
         up_key.whilePressedContinuous(mechanic);
     }
 
     /**
      * A mechanic will be scheduled when the up/up key is pressed. The mechanic will only be scheduled
-     *  once for every time the key is pressed. 
+     * once for every time the key is pressed. 
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled once whenever the up/up key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled once whenever the up/up key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whenUpPressed(GenericMechanic mechanic) {
+    public void whenUpPressed(MechanicBase mechanic) {
         up_key.whenPressed(mechanic);
     }
 
@@ -313,27 +253,19 @@ public class Controller
      * Used to remove a mechanic that is scheduled while the down/down keyboard key is continuously pressed. 
      * (Mechanics that were passed into the whileDownPressedContinuous(...) method!)
      * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhileDownPressedContinuousMechanic(GenericMechanic mechanic) {
+    public void removeWhileDownPressedContinuousMechanic(MechanicBase mechanic) {
         down_key.removeWhilePressedContinuousMechanic(mechanic);
     }
 
     /**
      * Used to remove a mechanic that is scheduled when the down/down keyboard key is pressed. 
      * (Mechanics that were passed into the whenDownPressed(...) method!)
-     * 
-     * @param <GenericMechanic>
-     * - Any mechanic instance that possesses MechanicBase as a superclass.
-     * 
-     * @param mechanic
-     * - The mechanic to remove.
+     *
+     * @param mechanic (MechanicBase) : The mechanic to remove.
      */
-    public <GenericMechanic extends MechanicBase> void removeWhenDownPressedMechanic(GenericMechanic mechanic) {
+    public void removeWhenDownPressedMechanic(MechanicBase mechanic) {
         down_key.removeWhenPressedMechanic(mechanic);
     }
 
@@ -359,49 +291,25 @@ public class Controller
      * A mechanic will be scheduled while the down/down key is pressed. The mechanic will continuously be re-scheduled 
      * upon ending as long as the key is still being pressed; continuously running the mechanic in a looped fashion.
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled while the down/down key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled while the down/down key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whileDownPressedContinuous(GenericMechanic mechanic) {
+    public void whileDownPressedContinuous(MechanicBase mechanic) {
         down_key.whilePressedContinuous(mechanic);
     }
 
     /**
      * A mechanic will be scheduled when the down/down key is pressed. The mechanic will only be scheduled
-     *  once for every time the key is pressed. 
+     * once for every time the key is pressed. 
      * 
-     * @param <GenericMechanic>
-     *  Any mechanic extending MechanicBase for its superclass (required for every mechanic).
-     * 
-     * @param mechanic
-     * - The mechanic to be scheduled once whenever the down/down key is pressed.
+     * @param mechanic (MechanicBase) : The mechanic to be scheduled once whenever the down/down key is pressed.
      */
-    public <GenericMechanic extends MechanicBase> void whenDownPressed(GenericMechanic mechanic) {
+    public void whenDownPressed(MechanicBase mechanic) {
         down_key.whenPressed(mechanic);
     }
 
-    /**
-     * Returns a different Button instance each time the method is called, and loops through the list of Button 
-     * instances. Moreover, when the method is continuously called, and the run() method is called from each instance returned, 
-     * then all Button instances will function appropriately.
-     * 
-     * @return
-     *  A different Button instance each time the method is called. 
-     */
-    public Button getButtonInstance() {
-        Button button = null;
-        if(!buttons.isEmpty() && current_instance_index < buttons.size()) {
-            button = buttons.get(current_instance_index);
+    public void run() {
+        for(var button : buttons) {
+            button.run();
         }
-        else if(!buttons.isEmpty()) {
-            button = buttons.getFirst();
-            current_instance_index = 0;
-        }
-
-        current_instance_index++;
-        return button;
     }
 }

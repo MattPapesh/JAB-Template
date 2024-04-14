@@ -54,10 +54,7 @@ public class AppBase extends JFrame implements AppInterface
     private void updateIconImage(int update_delay_millis) {
         if(getMillis() % update_delay_millis == 0) {
             super.setIconImage(icons.get(current_icon_index));
-            current_icon_index++;
-            if(current_icon_index >= icons.size()) {
-                current_icon_index = 0;
-            }
+            current_icon_index = (current_icon_index + 1 < icons.size()) ? current_icon_index + 1 : 0;
         }
     }
 
@@ -69,11 +66,13 @@ public class AppBase extends JFrame implements AppInterface
      * Must be called once to begin running the application. 
      */
     public void startApp() {
+        int initial_millis = getMillis();
         appBaseInit();
         while(true) {
             try {
                 appBasePeriodic();
-                Thread.sleep(Constants.WINDOW_CHARACTERISTICS.REFRESH_RATE_MILLIS);
+                Thread.sleep(Math.max(Constants.WINDOW_CHARACTERISTICS.REFRESH_RATE_MILLIS - getMillis() + initial_millis, 0));
+                initial_millis = getMillis();
             }
             catch(InterruptedException e) {}
         }
@@ -159,7 +158,6 @@ public class AppBase extends JFrame implements AppInterface
      * @param down_key_id (int) : The specified key code of the down key. 
      * 
      * @see The keyboard keys used for the controller are intended to be neighboring keys that follow a WASD format.
-     * 
      * @return A new Controller instance that possesses the intended keyboard keys in a WASD format.  
      */
     public Controller getController(int left_key_id, int right_key_id, int up_key_id, int down_key_id) {
@@ -173,28 +171,18 @@ public class AppBase extends JFrame implements AppInterface
        // }
     }
 
-    private void runControllers() {
-        Controller controller = ControllerScheduler.getControllerInstance();
-        for(int i = 0; controller != null && i < controller.getAmountOfButtons(); i++) {
-            controller.getButtonInstance().run();
-        }
-    }
-
     // Periodically called by app refresh rate (tick system)
     private void appBasePeriodic() {
-        try {
-            updateIconImage(1000);
-            determineAppStatus();
-            if(prev_app_status == null || prev_app_status.getStatusID() != app_status.getStatusID()) {
-                app_status.prioritizedInit(); 
-            }
-
-            app_status.prioritizedPeriodic();
-            MechanicScheduler.getInstance().run();
-            runGUIs();
-            runControllers();
+        updateIconImage(1000);
+        determineAppStatus();
+        if(prev_app_status == null || prev_app_status.getStatusID() != app_status.getStatusID()) {
+            app_status.prioritizedInit(); 
         }
-        catch(NullPointerException e) {}
+
+        app_status.prioritizedPeriodic();
+        MechanicScheduler.getInstance().run();
+        runGUIs();
+        ControllerScheduler.getInstance().run();
     }
 
     /**
