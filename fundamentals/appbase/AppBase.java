@@ -33,13 +33,13 @@ public class AppBase extends JFrame implements AppInterface
     private AppGraphics app_graphics = new AppGraphics();
     private static AppInput app_input = new AppInput();
     private static AppAudio app_audio = new AppAudio();
-    
-    private prioritizedAppStatus prev_app_status = null;
-    private prioritizedAppStatus app_status = null;
+
+    private PrioritizedAppStatus prev_app_status = null;
+    private PrioritizedAppStatus app_status = null;
     
     private boolean determined_app_status = false;
 
-    private interface prioritizedAppStatus {
+    private interface PrioritizedAppStatus {
         public void prioritizedInit();
         public void prioritizedPeriodic();
         public int getStatusID();
@@ -52,13 +52,17 @@ public class AppBase extends JFrame implements AppInterface
     }
 
     private void updateIconImage(int update_delay_millis) {
-        if(MechanicScheduler.getElapsedMillis() % update_delay_millis == 0) {
+        if(getMillis() % update_delay_millis == 0) {
             super.setIconImage(icons.get(current_icon_index));
             current_icon_index++;
             if(current_icon_index >= icons.size()) {
                 current_icon_index = 0;
             }
         }
+    }
+
+    public static int getMillis() {
+        return (int)System.currentTimeMillis();
     }
 
     /**
@@ -95,48 +99,27 @@ public class AppBase extends JFrame implements AppInterface
 
     /**
      * Plays the audio file passed in once. 
-     * 
-     * @param file_name 
-     * - The name of the audio file to play; file type included. EX: "myAudio.wav"
-     * 
-     * @see
-     *  Note: Only WAV audio files are compatible. 
+     * @param file_name (String) : The specified name of the audio file to play. 
+     * @see Only WAV audio files are compatible. Example argument: "file.wav" 
      */
     public static void playAudioFile(String file_name) {
         app_audio.playAudioFile(file_name);
     }
 
     /**
-     * Consecutively plays the audio file passed in as many times as described. 
-     * 
-     * @param file_name 
-     * - The name of the audio file to play; file type included. EX: "myAudio.wav"
-     * 
-     * @param count
-     * - The amount of times to play the described audio file. 
-     * 
-     * @see
-     *  Note: Only WAV audio files are compatible. 
+     * Consecutively plays the audio file passed in as many times as described.  
+     * @param file_name (String) : The specified name of the audio file to play.
+     * @param count (int) : The unsigned amount of times to play the described audio file. 
+     * @see Only WAV audio files are compatible. Example argument: "file.wav"
      */
     public static void playAudioFileLoop(String file_name, int count) {
-        app_audio.playAudioFileLoop(file_name, count);
+        app_audio.playAudioFileLoop(file_name, Math.max(count, 0));
     }
 
     /**
      * Consecutively plays the audio file passed continuously without stopping. 
-     * 
-     * @param file_name 
-     * - The name of the audio file to play; file type included. EX: "myAudio.wav"
-     * 
-     * @param count
-     * - The amount of times to play the described audio file. 
-     * 
-     * @see
-     *  Note: Only WAV audio files are compatible.
-     * 
-     * @see
-     *  Note: Audio that is continuously looped will only stop playing by calling the 
-     *  stopAudioFile(String file_name) method!
+     * @param file_name (String) : The specified name of the audio file to play.
+     * @see Only WAV audio files are compatible. Example argument: "file.wav"
      */
     public static void playAudioFileLoopContinuously(String file_name) {
         app_audio.playAudioFileLoopContinuously(file_name);
@@ -147,11 +130,8 @@ public class AppBase extends JFrame implements AppInterface
      * consecutively replayed on a loop, all future replays that have not yet occurred will be immediately 
      * canceled. 
      * 
-     * @param file_name 
-     * - The name of the audio file to stop; file type included. EX: "myAudio.wav"
-     * 
-     * @see
-     *  Note: Only WAV audio files are compatible. 
+     * @param file_name (String) : The specified name of the audio file to stop.
+     * @see Only WAV audio files are compatible. Example argument: "file.wav"
      */
     public static void stopAudioFile(String file_name) {
         app_audio.stopAudioFile(file_name);
@@ -161,8 +141,7 @@ public class AppBase extends JFrame implements AppInterface
      * Stops playing all currently-playing audio files and cancels any replays for audio files that are 
      * being consecutively played on a loop. 
      * 
-     * @see
-     *  Note: Only WAV audio files are compatible. 
+     * @see Only WAV audio files are compatible. Example argument: "file.wav"
      */
     public static void stopAllAudioFiles() {
         app_audio.stopAllAudioFiles();
@@ -174,43 +153,24 @@ public class AppBase extends JFrame implements AppInterface
      * Finally, the key IDs passed in will be key codes associated with keyboard keys, and those keys will become the
      * group of buttons for the Controller instance returned.  
      * 
-     * @see 
-     * Note: The keyboard keys used for the controller are intended to be neighboring keys that follow a WASD format.
-     * Although any keys from anywhere on a keyboard may be used, a WASD format is recommended. 
+     * @param left_key_id (int) : The specified key code of the left key. 
+     * @param right_key_id (int) : The specified key code of the right key. 
+     * @param up_key_id (int) : The specified key code of the up key. 
+     * @param down_key_id (int) : The specified key code of the down key. 
      * 
-     * @param left_key_id 
-     * - The key code of the left key in a WASD format for the Controller instance returned.
+     * @see The keyboard keys used for the controller are intended to be neighboring keys that follow a WASD format.
      * 
-     * @param right_key_id
-     * - The key code of the right key in a WASD format for the Controller instance returned.
-     * 
-     * @param up_key_id
-     * - The key code of the up/up key in a WASD format for the Controller instance returned.
-     * 
-     * @param down_key_id
-     * - The key code of the down/down key in a WASD format for the Controller instance returned.
-     * 
-     * @return
-     *  A new Controller instance that possesses the intended keyboard keys in a WASD format.  
+     * @return A new Controller instance that possesses the intended keyboard keys in a WASD format.  
      */
     public Controller getController(int left_key_id, int right_key_id, int up_key_id, int down_key_id) {
         return new Controller(app_input, left_key_id, right_key_id, up_key_id, down_key_id);
     }
 
-    private void runMechanics() {
-        MechanicBase mechanic = MechanicScheduler.getInstance();
-        //MechanicScheduler.interruptSimultaneousComponentUtilization();
-
-        if(mechanic != null) {
-            mechanic.run();
-        }
-    }
-
     private void runGUIs() {
-        GUI GUI = GUIScheduler.getGUIInstance(); 
-        for(int i = 0; GUI != null && i < GUI.getAmountOfOptions(); i++) {
-            GUI.getOptionInstance().run();
-        }
+       // GUI GUI = GUIScheduler.getGUIInstance(); 
+        //for(int i = 0; GUI != null && i < GUI.getAmountOfOptions(); i++) {
+         //   GUI.getOptionInstance().run();
+       // }
     }
 
     private void runControllers() {
@@ -230,7 +190,7 @@ public class AppBase extends JFrame implements AppInterface
             }
 
             app_status.prioritizedPeriodic();
-            runMechanics();
+            MechanicScheduler.getInstance().run();
             runGUIs();
             runControllers();
         }
@@ -243,7 +203,7 @@ public class AppBase extends JFrame implements AppInterface
      */
     public void initiateAppStatus() {
         prev_app_status = app_status;
-        app_status = new prioritizedAppStatus() {
+        app_status = new PrioritizedAppStatus() {
 
             @Override public void prioritizedInit() { appInit(); }
             @Override public void prioritizedPeriodic() { appPeriodic(); }
@@ -253,7 +213,7 @@ public class AppBase extends JFrame implements AppInterface
  
     /**
      * Resets the application's current status. Calling this method will put the application in a "idle status", 
-     * and any of the initiaite status methods will need to be called to put the application into an active state
+     * and any of the initiate status methods will need to be called to put the application into an active state
      * again. 
      */
     private void resetAppStatuses() {

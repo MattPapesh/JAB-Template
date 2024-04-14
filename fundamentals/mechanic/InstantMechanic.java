@@ -22,8 +22,7 @@ public class InstantMechanic extends MechanicBase
      * A variation of MechanicBase, InstantMechanics are mechanics that when instantiated, require a lambda function
      * that will describe the mechanic's behavior. 
      * 
-     * @see 
-     * Moreover, the lambda function will be called once at the event that the InstantMechanic
+     * @see The lambda function will be called once at the event that the InstantMechanic
      * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending condition!
      * The lambda function is the entire mechanic. 
      */
@@ -34,11 +33,10 @@ public class InstantMechanic extends MechanicBase
     @Override
     public void initialize() {
         behavior.behavior();
-        this.cancel();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 }

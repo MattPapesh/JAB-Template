@@ -11,17 +11,15 @@ import fundamentals.component.ComponentBase;
  * calling the addRequirements(GenericComponent... components) method as long as if that mechanic isn't already 
  * extending another Mechanic superclass for appropriate functionality.
  * 
- * @see
- * Note: Mechanic superclasses: MechanicBase, InstantMechanic, and SequentialMechanicGroup.
+ * @see Mechanic Superclasses: MechanicBase, InstantMechanic, and SequentialMechanicGroup.
  */
 public class MechanicBase implements MechanicInterface
 {
     private final double MECHANIC_ID = Math.random();
-    private LinkedList<Double> component_IDs = new LinkedList<Double>();
-    private boolean scheduled = false; 
-    private boolean initialized = false;
-    private boolean interrupted = false;
-    private int initial_millis = 0;
+    private LinkedList<ComponentBase> components = new LinkedList<ComponentBase>();
+    public boolean is_scheduled = false; 
+    public boolean is_initialized = false;
+    public int initial_periodic_millis = 0;
     private int executional_periodic_delay_millis = 0; 
 
     @Override public void initialize() {}
@@ -34,12 +32,29 @@ public class MechanicBase implements MechanicInterface
      * this method in order for the subclass to appropriately function as a app mechanic. Moreover, any components 
      * that will be used by the mechanic must be passed in.
      */
-    public <GenericComponent extends ComponentBase> void addRequirements(GenericComponent... components) {
+    public void addRequirements(ComponentBase... components) {
         if(components.length != 0 && components[0].getClass().getSuperclass().getName() == ComponentBase.class.getName()) {
-            for(int i = 0; i < components.length; i++) {
-                this.component_IDs.addLast(components[i].getComponentID());
+            for(var comp : components) {
+                this.components.addLast(comp);
             }
         }
+    }
+
+    /**
+     * Once MechanicBase has been extended and become a superclass to a subclass, the subclass must call 
+     * this method in order for the subclass to appropriately function as a app mechanic. Moreover, any components 
+     * that will be used by the mechanic must be passed in.
+     */
+    public void addRequirements(LinkedList<ComponentBase> components) {
+        if(!components.isEmpty() && components.getFirst().getClass().getSuperclass().getName() == ComponentBase.class.getName()) {
+            for(var comp : components) {
+                this.components.addLast(comp);
+            }
+        }
+    }
+
+    public LinkedList<ComponentBase> getRequirements() {
+        return new LinkedList<ComponentBase>(components);
     }
 
     /**
@@ -53,11 +68,10 @@ public class MechanicBase implements MechanicInterface
      * The execute() method is continuously called once a mechanic is scheduled, and so this method 
      * is used to determine how often the execute() method should be called. 
      * 
-     * @param millis 
-     *  - The amount of periodic delay in milliseconds.
+     * @param millis (int) : The unsigned amount of periodic delay in milliseconds.
      */
     public void setExecutionalPeriodicDelay(int millis) {
-        executional_periodic_delay_millis = millis;
+        executional_periodic_delay_millis = Math.max(millis, 0);
     }
 
     /**
@@ -66,76 +80,5 @@ public class MechanicBase implements MechanicInterface
      */
     public int getExecutionalPeriodicDelay() {
         return executional_periodic_delay_millis;
-    }
-
-    /**
-     * "Schedules" a mechanic to run. Once scheduled by calling this method, a mechanic will call initialize() once,
-     * and then continuously call execute() until isFinished()'s ending condition returns true, and finally end() is called once. 
-     */
-    public void schedule() {
-        scheduled = true; 
-        MechanicScheduler.registerMechanic(this);
-    }
-
-    /**
-     * Used to immediately halt a scheduled and running mechanic. 
-     */
-    public void cancel() {
-        interrupted = true;
-    }
-
-    /**
-     * This method is continuously called by the MechanicScheduler for any "registered" mechanics, where a mechanic is registered
-     * with the MechanicScheduler once a mechanic is scheduled; the mechanic remains scheduled, and this method is continuously called for 
-     * the mechanic's functionality until either the mechanic meets its finishing condition as isFinished() returns true, or if the 
-     * mechanic is ever canceled while running. 
-     */
-    public void run() {
-        if(scheduled && !initialized && !isFinished()) {
-            initial_millis = MechanicScheduler.getElapsedMillis();
-            this.initialize();
-            initialized = true;
-        }
-        else if(scheduled && initialized && !isFinished() && 
-        Math.abs(MechanicScheduler.getElapsedMillis() - initial_millis) >= executional_periodic_delay_millis) {
-            this.execute();
-            initial_millis = MechanicScheduler.getElapsedMillis();
-        }
-        
-        if(scheduled && (this.isFinished() || interrupted)) {
-            this.end(interrupted);
-            scheduled = false; 
-            initialized = false;
-            interrupted = false;
-            MechanicScheduler.removeMechanic(this);
-        }
-    }
-
-    /**
-     * @return Whether or not the mechanic is scheduled and is running. 
-     */
-    public boolean isScheduled() {
-        return scheduled;
-    }
-
-    /**
-     * @return Whether or not the mechanic has been initialized and the initialize() method has been called. 
-     */
-    public boolean isInitialized() {
-        return initialized;
-    }
-
-    /**
-     * @return Whether or not the mechanic has been interrupted by a cancellation. 
-     */
-    public boolean isInterrupted() {
-        return interrupted;
-    }
-
-    /**
-     * @return The mechanic's personal ID; a specific and unique value that is assigned upon instantiation.
-     */
-    public LinkedList<Double> getComponentIDs() {
-        return component_IDs;
     }
 }

@@ -12,7 +12,6 @@ import java.util.LinkedList;
 public class GUIScheduler 
 {
     private static LinkedList<GUI> GUIs = new LinkedList<GUI>();
-    private static int current_instance_index = 0;
 
     /**
      * Given that a GUI's Buttons' run() method must be continuously called in order to function, the GUIScheduler needs to be able to
@@ -42,15 +41,7 @@ public class GUIScheduler
         }
     }
 
-    /**
-     * Returns a different registered GUI instance each time the method is called, and loops through the list of registered
-     * GUI instances. Moreover, when the method is continuously called, and the run() method is ran from each returned instance's 
-     * GUIOptions, then all registered GUI instances will function appropriately.
-     * 
-     * @return
-     *  A different registered GUI instance each time the method is called. 
-     */
-    public static GUI getGUIInstance() {
+    public static void run() {
         GUI GUI = null;
         if(!GUIs.isEmpty() && current_instance_index < GUIs.size()) {
             GUI = GUIs.get(current_instance_index);

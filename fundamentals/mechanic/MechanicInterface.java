@@ -19,8 +19,7 @@ public interface MechanicInterface
      * unlike initialize(), this method will be continuously called as long as a mechanic is scheduled and running. Lastly, this method
      * will stop being called once either the mechanic's ending condition is met, or if the mechanic is canceled.
      * 
-     * @see
-     * Note: This method will be called at a variable periodic rate that can be set be set with MechanicBase's  
+     * @see This method will be called at a variable periodic rate that can be set be set with MechanicBase's  
      * setExecutionalPeriodicDelay(int millis) method. 
      */
     public void execute();
@@ -36,8 +35,7 @@ public interface MechanicInterface
      * - Whether or not if the mechanic has been interrupted by a cancellation when finishing, or if the mechanic's
      * ending condition has been met, allowing it to end naturally. 
      * 
-     * @see
-     * Note: Calling MechanicBase's cancel() method will immediately put a scheduled and running mechanic to a halting stop.
+     * @see Calling MechanicBase's cancel() method will immediately put a scheduled and running mechanic to a halting stop.
      * This will be considered in interruption and cause the parameter to pass in as true, where a ending where isFinished() returns true
      * will result in the parameter to pass in as false. 
      */
@@ -45,7 +43,6 @@ public interface MechanicInterface
 
     /**
      * Used to determine when a scheduled mechanic is ready to conclude running and naturally end based on a returned ending condition.  
-     * 
      * @return Whether or not the mechanic's ending condition has been met, declaring whether or not the mechanic is finished running. 
      */
     public boolean isFinished();

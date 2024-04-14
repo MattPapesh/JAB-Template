@@ -32,8 +32,7 @@ public class ComponentBase
      * these animations will be considered as all of the visual representations that the component can have at any time when
      * running the application.  
      * 
-     * @see
-     * Note: Animation is a vague term referring to any PNG or GIF image. 
+     * @see Animation is a vague term referring to any PNG or GIF image. 
      */
     public void addRequirements(int x, int y, int degrees, Animation... animations) {
         current_animation = animations[0];
@@ -48,9 +47,7 @@ public class ComponentBase
 
     /**
      * The current image can be set by passing in the name of the image file; file type included. (EX: "myImage.png" )
-     * 
-     * @see
-     * Note: If the method is never called, the image belonging to the first Animation instance passed into the constructor will be used.
+     * @see If the method is never called, the image belonging to the first Animation instance passed into the constructor will be used.
      */
     public void setAnimation(String animation_name) {
         for(int i = 0; i < animations.size(); i++) {
@@ -61,13 +58,11 @@ public class ComponentBase
     }
 
     /**
-     * Used to set the component's opacity when on-screen. Opacity is how "solid" or visible the image is. The oppisite 
+     * Used to set the component's opacity when on-screen. Opacity is how "solid" or visible the image is. The opposite 
      * of transparency.  
      * 
-     * @param pct - How opaque the component's image should be on screen as a percentage that is represented as a decimal.
-     * 
-     * @see
-     * Note: The perentage representation as a decimal must be a value within the interval: [0, 1].
+     * @param pct (double) : How opaque the component's image should be on screen as a percentage that is represented as a decimal.
+     * @see The percentage representation as a decimal must be a value within the interval: [0, 1].
      */
     public void setOpacity(double pct) {
         opacity_pct = pct;
@@ -79,29 +74,27 @@ public class ComponentBase
      * @see
      * Note: The value returned will be within the interval: [0, 1].
      */
-    public double getOpacicty() {
+    public double getOpacity() {
         return opacity_pct;
     }
 
     /**
      * Toggles the component's activity to either be enabled or disabled.
-     * 
-     * @param active
-     * - The new toggled active state for the controller.
+     * @param active (boolean) : The specified new toggled active state for the controller.
      */
     public void toggleActivity(boolean active) {
         if(!this.active && active) {
             this.active = true;
-            //ComponentScheduler.registerComponent(this);
+            ComponentScheduler.registerComponent(this);
         }
         else if(this.active & !active) {
             this.active = false; 
-            //ComponentScheduler.removeComponent(this);
+            ComponentScheduler.removeComponent(this);
         }
     }
 
     /**
-     *  Sets the component's coordinates.
+     * Sets the component's coordinates.
      */
     public void setCoordinates(int x, int y, int degrees) {
         coordinates.setCoordinates(x, y, degrees);
@@ -128,12 +121,9 @@ public class ComponentBase
         return current_animation.getAnimation();
     }
 
-
     /**
      * @return An the width of the animation/image that the component is currently using. 
-     * 
-     * @see
-     * Note: Unit of measurement: Pixels.
+     * @see Unit of measurement: Pixels.
      */
     public int getWidth() {
         return current_animation.getImageWidth();
@@ -141,9 +131,7 @@ public class ComponentBase
 
     /**
      * @return An the height of the animation/image that the component is currently using. 
-     * 
-     * @see
-     * Note: Unit of measurement: Pixels.
+     * @see Unit of measurement: Pixels.
      */
     public int getHeight() {
         return current_animation.getImageHeight();
