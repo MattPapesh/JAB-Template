@@ -26,6 +26,8 @@ public class AppBase extends JFrame implements AppInterface
     private PrioritizedAppStatus prev_app_status = null;
     private PrioritizedAppStatus app_status = null;
     private boolean determined_app_status = false;
+    // Initial millis start time:
+    private static long program_start_millis = System.currentTimeMillis();
 
     private interface PrioritizedAppStatus {
         public void prioritizedInit();
@@ -47,7 +49,7 @@ public class AppBase extends JFrame implements AppInterface
     }
 
     public static int getMillis() {
-        return (int)System.currentTimeMillis();
+        return (int)(System.currentTimeMillis() - program_start_millis);
     }
 
     /**
@@ -91,6 +93,7 @@ public class AppBase extends JFrame implements AppInterface
         determineAppStatus();
         if(prev_app_status == null || prev_app_status.getStatusID() != app_status.getStatusID()) {
             app_status.prioritizedInit(); 
+            prev_app_status = app_status;
         }
 
         app_status.prioritizedPeriodic();

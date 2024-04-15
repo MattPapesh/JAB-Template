@@ -56,10 +56,14 @@ public class SequentialMechanicGroup extends MechanicBase
         }
 
         if(!mechanics.get(current_index).is_initialized) {
+            mechanics.get(current_index).is_scheduled = true;
             mechanics.get(current_index).initialize();
+            mechanics.get(current_index).is_initialized = true;
         }
         else if(!mechanics.get(current_index).isFinished()) {
             mechanics.get(current_index).end(false);
+            mechanics.get(current_index).is_initialized = false;
+            mechanics.get(current_index).is_scheduled = false;
             current_index++;
         }
         else if(AppBase.getMillis() - mechanics.get(current_index).initial_periodic_millis >= mechanics.get(current_index).getExecutionalPeriodicDelay()) {
@@ -70,10 +74,17 @@ public class SequentialMechanicGroup extends MechanicBase
 
     @Override
     public void end(boolean interrupted) {
+        current_index = 0;
         if(interrupted) {
-            for(var mech : mechanics) {
-                mech.end(true);
-                mechanics.remove(mech);
+            for(int i = 0; i < mechanics.size(); i++) {
+                if(mechanics.get(i).is_initialized) {
+                    mechanics.get(i).end(true);
+                    mechanics.get(i).is_initialized = false; 
+                }
+
+                mechanics.get(i).is_scheduled = false; 
+                mechanics.remove(i);
+                i--;
             }
         }
     }

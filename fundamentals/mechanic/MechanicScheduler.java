@@ -1,8 +1,6 @@
 package fundamentals.mechanic;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Vector;
+import java.util.LinkedList;
 import java.util.function.Function;
 
 import fundamentals.appbase.AppBase;
@@ -17,9 +15,9 @@ import fundamentals.component.ComponentBase;
  */
 public class MechanicScheduler 
 {
-    private Set<MechanicBase> mechanics = new HashSet<MechanicBase>();
-    private Set<ComponentBase> components = new HashSet<ComponentBase>();
-    private Vector<Function<Void, Void>> events = new Vector<Function<Void, Void>>();
+    private LinkedList<MechanicBase> mechanics = new LinkedList<MechanicBase>();
+    private LinkedList<ComponentBase> components = new LinkedList<ComponentBase>();
+    private LinkedList<Function<Void, Void>> events = new LinkedList<Function<Void, Void>>();
     private static MechanicScheduler scheduler = new MechanicScheduler();
 
     /**
@@ -28,14 +26,14 @@ public class MechanicScheduler
      */
     public void scheduleMechanic(MechanicBase mechanic) {
         // Cancel all mechanics requiring the same components as the specified mechanic. 
-        Set<ComponentBase> required_components = mechanic.getRequiredComponents();
+        LinkedList<ComponentBase> required_components = mechanic.getRequiredComponents();
         if(!required_components.isEmpty()) {
             // Collect all mechanics that share requirements. 
-            Set<MechanicBase> canceled_mechanics = new HashSet<MechanicBase>();
+            LinkedList<MechanicBase> canceled_mechanics = new LinkedList<MechanicBase>();
             // Iterate through other scheduled mechanics:
             for(var other_mechanic : mechanics) {
                 // Collect required components of other mechanic.
-                Set<ComponentBase> other_required_components = other_mechanic.getRequiredComponents();
+                LinkedList<ComponentBase> other_required_components = other_mechanic.getRequiredComponents();
                 // Iterate through other components to compare to required components:
                 for(var other_component : other_required_components) {
                     for(var required_component : required_components) {
@@ -51,6 +49,7 @@ public class MechanicScheduler
                 cancelMechanic(canceled_mechanic);
             }
 
+            mechanic.is_scheduled = true;
             mechanics.add(mechanic);
         }
     }
@@ -60,14 +59,21 @@ public class MechanicScheduler
      * @param mechanic (MechanicBase) : The specified mechanic.
      */
     public void cancelMechanic(MechanicBase mechanic) {
-        mechanic.end(true);
-        mechanics.remove(mechanic);
+        if(mechanics.contains(mechanic)) {
+            if(mechanic.is_initialized) {
+                mechanic.end(true);
+                mechanic.is_initialized = false;
+            }
+
+            mechanic.is_scheduled = false; 
+            mechanics.remove(mechanic);
+        }
     }
 
     public void cancelAllMechanics() {
-        for(var mechanic : mechanics) {
-            mechanic.end(true);
-            mechanics.remove(mechanic);
+        for(int i = 0; i < mechanics.size(); i++) {
+            mechanics.get(i).end(true);
+            mechanics.remove(i);
         }
     }
 
@@ -75,19 +81,25 @@ public class MechanicScheduler
      * This method is periodically called based on the application's refresh rate! This must happen!
      */
     public void runMechanics() {
-        for(var mech : mechanics) {
+        for(int i = 0; i < mechanics.size(); i++) {
             // Define mechanic lifetime policy:
-            if(!mech.is_initialized) {
-                mech.initialize();
-                mech.is_initialized = true;
+            if(!mechanics.get(i).is_initialized) {
+                //System.out.println("init");
+                mechanics.get(i).initialize();
+                mechanics.get(i).is_initialized = true;
             }
-            else if(mech.isFinished()) {
-                mech.end(false);
-                mechanics.remove(mech);
+            else if(mechanics.get(i).isFinished()) {
+                //System.out.println("done");
+                mechanics.get(i).end(false);
+                mechanics.get(i).is_initialized = false; 
+                mechanics.get(i).is_scheduled = false;
+                mechanics.remove(i);
+                i--; 
             }
-            else if(AppBase.getMillis() - mech.initial_periodic_millis >= mech.getExecutionalPeriodicDelay()){
-                mech.initial_periodic_millis = AppBase.getMillis();
-                mech.execute();
+            else if(AppBase.getMillis() - mechanics.get(i).initial_periodic_millis >= mechanics.get(i).getExecutionalPeriodicDelay()){
+                //System.out.println("exe");
+                mechanics.get(i).initial_periodic_millis = AppBase.getMillis();
+                mechanics.get(i).execute();
             }
         }
     }

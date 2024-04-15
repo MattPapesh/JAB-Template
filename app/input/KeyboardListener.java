@@ -15,9 +15,9 @@ public class KeyboardListener implements KeyListener
 
     @Override 
     public void keyPressed(KeyEvent e) {   
-        for(var released_key_id : released_key_ids) {
-            if(e.getKeyCode() == released_key_id) {
-                released_key_ids.remove(released_key_id);
+        for(int i = 0; i < released_key_ids.size(); i++) {
+            if(e.getKeyCode() == released_key_ids.get(i)) {
+                released_key_ids.remove(released_key_ids.get(i));
             }
         }
 
@@ -28,9 +28,9 @@ public class KeyboardListener implements KeyListener
 
     @Override
     public void keyReleased(KeyEvent e) {   
-        for(var pressed_key_id : pressed_key_ids) {
-            if(e.getKeyCode() == pressed_key_id) {
-                pressed_key_ids.remove(pressed_key_id);
+        for(int i = 0; i < pressed_key_ids.size(); i++) {
+            if(e.getKeyCode() == pressed_key_ids.get(i)) {
+                pressed_key_ids.remove(pressed_key_ids.get(i));
             }
         }
 
@@ -43,8 +43,8 @@ public class KeyboardListener implements KeyListener
      * @return Whether or not the key associated with the key code passed in is currently pressed.
      */
     protected boolean isKeyPressed(int key_id) {
-        for(var pressed_key_id : pressed_key_ids) {
-            if(pressed_key_id == key_id) {
+        for(int i = 0; i < pressed_key_ids.size(); i++) {
+            if(pressed_key_ids.get(i) == key_id) {
                 return true;
             }
         }
@@ -56,8 +56,8 @@ public class KeyboardListener implements KeyListener
      * @return Whether or not the key associated with the key code passed in is currently released. 
      */
     protected boolean isKeyReleased(int key_id) {
-        for(var released_key_id : released_key_ids) {
-            if(released_key_id == key_id) {
+        for(int i = 0; i < released_key_ids.size(); i++) {
+            if(released_key_ids.get(i) == key_id) {
                 return true;
             }
         }

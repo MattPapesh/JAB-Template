@@ -56,11 +56,12 @@ public class AppAudio
      * @param file_name (String) : The specified WAV file to stop playing. 
      */
     public void stopAudioFile(String file_name) {
-        for(var audio_file : audio_files) {
-            if(audio_file.getFileName() == file_name) {
-                audio_file.getAudioClip().stop();
-                audio_file.getAudioClip().close();
-                audio_files.remove(audio_file);
+        for(int i = 0; i < audio_files.size(); i++) {
+            if(audio_files.get(i).getFileName() == file_name) {
+                audio_files.get(i).getAudioClip().stop();
+                audio_files.get(i).getAudioClip().close();
+                audio_files.remove(i);
+                i--;
             }
         }
     }
@@ -70,9 +71,9 @@ public class AppAudio
      * if any WAV files passed in are not currently playing, then nothing will happen to those specific files.  
      */
     public void stopAllAudioFiles() {
-        for(var audio_file : audio_files) {
-            audio_file.getAudioClip().stop();
-            audio_file.getAudioClip().close();
+        for(int i = 0; i < audio_files.size(); i++) {
+            audio_files.get(i).getAudioClip().stop();
+            audio_files.get(i).getAudioClip().close();
         }
 
         audio_files.clear();
@@ -84,8 +85,8 @@ public class AppAudio
      * @return Whether or not the WAV file in question is currently playing. 
      */
     private boolean containsAudioFile(String file_name) {
-        for(var audio_file : audio_files) {
-            if(audio_file.getFileName() == file_name) {
+        for(int i = 0; i < audio_files.size(); i++) {
+            if(audio_files.get(i).getFileName() == file_name) {
                 return true;
             }
         }

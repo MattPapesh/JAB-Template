@@ -1,8 +1,6 @@
 package fundamentals.mechanic;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.LinkedList;
 import fundamentals.component.ComponentBase;
 
 /**
@@ -17,7 +15,7 @@ import fundamentals.component.ComponentBase;
  */
 public class MechanicBase implements MechanicInterface
 {
-    private Set<ComponentBase> components = new HashSet<ComponentBase>();
+    private LinkedList<ComponentBase> components = new LinkedList<ComponentBase>();
     public boolean is_scheduled = false; 
     public boolean is_initialized = false;
     public int initial_periodic_millis = 0;
@@ -46,13 +44,13 @@ public class MechanicBase implements MechanicInterface
      * this method in order for the subclass to appropriately function as a app mechanic. Moreover, any components 
      * that will be used by the mechanic must be passed in.
      */
-    public void addRequirements(Set<ComponentBase> components) {
+    public void addRequirements(LinkedList<ComponentBase> components) {
         for(var component : components) {
             this.components.add(component);
         }
     }
 
-    public Set<ComponentBase> getRequiredComponents() {
+    public LinkedList<ComponentBase> getRequiredComponents() {
         return components;
     }
 

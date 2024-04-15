@@ -1,8 +1,6 @@
 package fundamentals.UI;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.LinkedList;
 import app.input.Button;
 
 /**
@@ -12,7 +10,7 @@ import app.input.Button;
  */
 public class Controller 
 {
-    private Set<Button> buttons = new HashSet<Button>();
+    private LinkedList<Button> buttons = new LinkedList<Button>();
 
     public Controller() {}
 

@@ -21,18 +21,22 @@ public class ParallelMechanicGroup extends MechanicBase
 
     @Override
     public void execute() {
-        for(var mech : mechanics) {
-            if(!mech.is_initialized) {
-                mech.initialize();
-                mech.is_initialized = true;
+        for(int i = 0; i < mechanics.size(); i++) {
+            if(!mechanics.get(i).is_initialized) {
+                mechanics.get(i).is_scheduled = true;
+                mechanics.get(i).initialize();
+                mechanics.get(i).is_initialized = true;
             }
-            else if(mech.isFinished()) {
-                mech.end(false);
-                mechanics.remove(mech);
+            else if(mechanics.get(i).isFinished()) {
+                mechanics.get(i).end(false);
+                mechanics.get(i).is_initialized = false;
+                mechanics.get(i).is_scheduled = false;
+                mechanics.remove(i);
+                i--;
             }
-            else if(AppBase.getMillis() - mech.initial_periodic_millis >= mech.getExecutionalPeriodicDelay()) {
-                mech.initial_periodic_millis = AppBase.getMillis();
-                mech.execute();
+            else if(AppBase.getMillis() - mechanics.get(i).initial_periodic_millis >= mechanics.get(i).getExecutionalPeriodicDelay()) {
+                mechanics.get(i).initial_periodic_millis = AppBase.getMillis();
+                mechanics.get(i).execute();
             }
         }
     }
@@ -40,9 +44,15 @@ public class ParallelMechanicGroup extends MechanicBase
     @Override
     public void end(boolean interrupted) {
         if(interrupted) {
-            for(var mech : mechanics) {
-                mech.end(true);
-                mechanics.remove(mech);
+            for(int i = 0; i < mechanics.size(); i++) {
+                if(mechanics.get(i).is_initialized) {
+                    mechanics.get(i).end(true);
+                    mechanics.get(i).is_initialized = false; 
+                }
+
+                mechanics.get(i).is_scheduled = false;
+                mechanics.remove(i);
+                i--;
             }
         }
     }

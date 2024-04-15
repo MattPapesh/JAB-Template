@@ -33,7 +33,12 @@ public class GraphicsRenderer extends JPanel
 
     @Override
     protected void paintComponent(Graphics graphics) {
+        // Get graphics:
         Graphics2D graphics_2d = (Graphics2D)graphics;
+        // Render cleared backround before rendering:
+        graphics.setColor(getBackground());
+        graphics.fillRect(0, 0, Constants.WINDOW_CHARACTERISTICS.WINDOW_WIDTH, Constants.WINDOW_CHARACTERISTICS.WINDOW_HEIGHT);
+        // Iterate through component registry and render components:
         for(var comp : ComponentRegistry.getComponents()) {
             try {
                 if(comp.getActivity()) {
