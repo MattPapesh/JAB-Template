@@ -69,6 +69,16 @@ public class SequentialMechanicGroup extends MechanicBase
     }
 
     @Override
+    public void end(boolean interrupted) {
+        if(interrupted) {
+            for(var mech : mechanics) {
+                mech.end(true);
+                mechanics.remove(mech);
+            }
+        }
+    }
+
+    @Override
     public boolean isFinished() {
         return current_index >= mechanics.size();
     }
