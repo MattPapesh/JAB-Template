@@ -15,7 +15,6 @@ import fundamentals.mechanic.InstantMechanic;
  */
 public class GUI extends AppBase
 {
-    private final double UI_ID = Math.random();
     private LinkedList<GUIOption> UI_options = new LinkedList<GUIOption>();
     private int current_instance_index = 0;
     private int current_selected_index = 0;
@@ -175,13 +174,6 @@ public class GUI extends AppBase
      */
     public int getAmountOfOptions() {
         return UI_options.size();
-    }
-
-    /**
-     * @return The ID number associated with this GUI instance; a specific and unique value given to each GUI upon its instantiation. 
-     */
-    public double getID() {
-        return UI_ID;
     }
 
     /**

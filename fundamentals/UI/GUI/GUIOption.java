@@ -25,8 +25,6 @@ public class GUIOption extends ComponentBase
      * the option is idle along with when it is selected on-screen. Finally, coordinates and a mechanic can be passed into the constructor,
      * where the mechanic will be scheduled and be considered the behavior that occurs once the option is selected and used. 
      * 
-     * @param <GenericMechanic> - Any instance extending MechanicBase as its superclass
-     * 
      * @param idle_file_name
      * - File name(s) of the image(s) that will visually-represent the option 
      * 
@@ -37,8 +35,7 @@ public class GUIOption extends ComponentBase
      * - The mechanic that will be scheduled by the parent GUI once the option is "selected"
      */
 
-    public <GenericMechanic extends MechanicBase> GUIOption(String idle_file_name, String selected_file_name, int x, int y, 
-    GenericMechanic mechanic) {
+    public GUIOption(String idle_file_name, String selected_file_name, int x, int y, MechanicBase mechanic) {
         LinkedList<Animation> UI_options = getAnimations(new String[]{idle_file_name, selected_file_name});
         
         UI_option[0] = new Animation(idle_file_name);
@@ -58,8 +55,6 @@ public class GUIOption extends ComponentBase
      * the option is idle along with when it is selected on-screen. Finally, coordinates and a mechanic can be passed into the constructor,
      * where the mechanic will be scheduled and be considered the behavior that occurs once the option is selected and used. 
      * 
-     * @param <GenericMechanic> - Any instance extending MechanicBase as its superclass
-     * 
      * @param idle_file_names
      * - File name(s) of the image(s) that will visually-represent the option 
      * 
@@ -70,8 +65,7 @@ public class GUIOption extends ComponentBase
      * - The mechanic that will be scheduled by the parent GUI once the option is "selected"
      */
 
-    public <GenericMechanic extends MechanicBase> GUIOption(String[] idle_file_names, String[] selected_file_names, int x, int y, 
-    GenericMechanic mechanic) {
+    public GUIOption(String[] idle_file_names, String[] selected_file_names, int x, int y, MechanicBase mechanic) {
         LinkedList<Animation> UI_options = getAnimations(idle_file_names);
         UI_options.addAll(getAnimations(selected_file_names));
 
@@ -92,8 +86,6 @@ public class GUIOption extends ComponentBase
      * the option is idle along with when it is selected on-screen. Finally, coordinates and a mechanic can be passed into the constructor,
      * where the mechanic will be scheduled and be considered the behavior that occurs once the option is selected and used. 
      * 
-     * @param <GenericMechanic> - Any instance extending MechanicBase as its superclass
-     * 
      * @param idle_file_names
      * - File name(s) of the image(s) that will visually-represent the option 
      * 
@@ -105,8 +97,7 @@ public class GUIOption extends ComponentBase
      */
 
 
-    public <GenericMechanic extends MechanicBase> GUIOption(String[] idle_file_names, String selected_file_name, int x, int y, 
-    GenericMechanic mechanic) {
+    public GUIOption(String[] idle_file_names, String selected_file_name, int x, int y, MechanicBase mechanic) {
         LinkedList<Animation> UI_options = getAnimations(idle_file_names);
         UI_options.addAll(getAnimations(new String[]{selected_file_name}));
 
@@ -127,8 +118,6 @@ public class GUIOption extends ComponentBase
      * the option is idle along with when it is selected on-screen. Finally, coordinates and a mechanic can be passed into the constructor,
      * where the mechanic will be scheduled and be considered the behavior that occurs once the option is selected and used. 
      * 
-     * @param <GenericMechanic> - Any instance extending MechanicBase as its superclass
-     * 
      * @param idle_file_name(s)
      * - File name(s) of the image(s) that will visually-represent the option 
      * 
@@ -139,8 +128,7 @@ public class GUIOption extends ComponentBase
      * - The mechanic that will be scheduled by the parent GUI once the option is "selected"
      */
 
-    public <GenericMechanic extends MechanicBase> GUIOption(String idle_file_name, String[] selected_file_names, int x, int y, 
-    GenericMechanic mechanic) {
+    public GUIOption(String idle_file_name, String[] selected_file_names, int x, int y, MechanicBase mechanic) {
         LinkedList<Animation> UI_options = getAnimations(new String[]{idle_file_name});
         UI_options.addAll(getAnimations(selected_file_names));
 

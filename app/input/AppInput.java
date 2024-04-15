@@ -9,8 +9,9 @@ import java.util.LinkedList;
  */
 public class AppInput implements KeyListener
 {
-    private static LinkedList<Integer> pressed_key_ids = new LinkedList<Integer>();
-    private static LinkedList<Integer> released_key_ids = new LinkedList<Integer>();
+    private LinkedList<Integer> pressed_key_ids = new LinkedList<Integer>();
+    private LinkedList<Integer> released_key_ids = new LinkedList<Integer>();
+    private static AppInput app_input = new AppInput();
 
     @Override 
     public void keyPressed(KeyEvent e) {   
@@ -88,5 +89,9 @@ public class AppInput implements KeyListener
      */
     public int getReleasedSize() {
         return released_key_ids.size();
+    }
+
+    public static AppInput getInstance() {
+        return app_input;
     }
 }

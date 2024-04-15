@@ -45,7 +45,7 @@ public class SequentialMechanicGroup extends MechanicBase
     public void addMechanics(MechanicBase... mechanics) {
         for(var mech : mechanics) {
             this.mechanics.addLast(mech);
-            addRequirements(mech.getRequirements());
+            addRequirements(mech.getRequiredComponents());
         }
     }
     

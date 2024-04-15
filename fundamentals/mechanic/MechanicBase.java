@@ -1,6 +1,9 @@
 package fundamentals.mechanic;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+
 import fundamentals.component.ComponentBase;
 
 /**
@@ -15,8 +18,7 @@ import fundamentals.component.ComponentBase;
  */
 public class MechanicBase implements MechanicInterface
 {
-    private final double MECHANIC_ID = Math.random();
-    private LinkedList<ComponentBase> components = new LinkedList<ComponentBase>();
+    private Set<ComponentBase> components = new HashSet<ComponentBase>();
     public boolean is_scheduled = false; 
     public boolean is_initialized = false;
     public int initial_periodic_millis = 0;
@@ -35,7 +37,7 @@ public class MechanicBase implements MechanicInterface
     public void addRequirements(ComponentBase... components) {
         if(components.length != 0 && components[0].getClass().getSuperclass().getName() == ComponentBase.class.getName()) {
             for(var comp : components) {
-                this.components.addLast(comp);
+                this.components.add(comp);
             }
         }
     }
@@ -45,23 +47,14 @@ public class MechanicBase implements MechanicInterface
      * this method in order for the subclass to appropriately function as a app mechanic. Moreover, any components 
      * that will be used by the mechanic must be passed in.
      */
-    public void addRequirements(LinkedList<ComponentBase> components) {
-        if(!components.isEmpty() && components.getFirst().getClass().getSuperclass().getName() == ComponentBase.class.getName()) {
-            for(var comp : components) {
-                this.components.addLast(comp);
-            }
+    public void addRequirements(Set<ComponentBase> components) {
+        for(var component : components) {
+            this.components.add(component);
         }
     }
 
-    public LinkedList<ComponentBase> getRequirements() {
-        return new LinkedList<ComponentBase>(components);
-    }
-
-    /**
-     * @return The mechanic's personal ID; a specific and unique value that is assigned upon instantiation.
-     */
-    public double getMechanicID() {
-        return MECHANIC_ID;
+    public Set<ComponentBase> getRequiredComponents() {
+        return components;
     }
 
     /**

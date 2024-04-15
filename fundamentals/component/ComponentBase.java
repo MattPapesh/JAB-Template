@@ -5,6 +5,7 @@ import java.awt.*;
 
 import fundamentals.Coordinates;
 import fundamentals.animation.Animation;
+import fundamentals.mechanic.MechanicScheduler;
 
 /**
  * The superclass to every app component. ComponentBase allows component classes to inherit methods for setting its image's
@@ -15,7 +16,7 @@ import fundamentals.animation.Animation;
  * Note: When ComponentBase is used as a superclass and it is extended to a subclass, that component subclass will immediately create 
  * its image on screen upon instantiation.   
  */
-public class ComponentBase 
+public class ComponentBase implements ComponentInterface
 {
     private final double COMPONENT_ID = Math.random();
     private LinkedList<Animation> animations = new LinkedList<Animation>();
@@ -23,6 +24,9 @@ public class ComponentBase
     private Coordinates coordinates = new Coordinates(0, 0, 0);
     private double opacity_pct = 1.0;
     private boolean active = false;
+
+    @Override
+    public void periodic() {}
 
     /**
      * Once ComponentBase has been extended and become a superclass to a subclass, the subclass must call 
@@ -43,6 +47,7 @@ public class ComponentBase
 
         toggleActivity(true);
         ComponentScheduler.registerComponent(this);
+        MechanicScheduler.getInstance().registerComponent(this);
     }
 
     /**

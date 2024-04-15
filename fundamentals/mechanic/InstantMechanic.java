@@ -11,10 +11,10 @@ package fundamentals.mechanic;
  */
 public class InstantMechanic extends MechanicBase 
 {
-    private mechanic_behavior behavior = null;
+    private MechanicBehavior behavior = null;
 
     @FunctionalInterface
-    public interface mechanic_behavior {
+    public interface MechanicBehavior {
         public void behavior();  
     }
 
@@ -26,7 +26,7 @@ public class InstantMechanic extends MechanicBase
      * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending condition!
      * The lambda function is the entire mechanic. 
      */
-    public InstantMechanic(mechanic_behavior behavior) {
+    public InstantMechanic(MechanicBehavior behavior) {
         this.behavior = behavior;
     }
 
