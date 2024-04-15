@@ -5,15 +5,15 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import app.AppGraphics;
-import app.input.AppInput;
+import app.GraphicsRenderer;
+import app.input.KeyboardListener;
 import fundamentals.Constants;
 import fundamentals.animation.Animation;
 import fundamentals.mechanic.MechanicScheduler;
 
 /**
  * The base of every application. AppBase is what generates the application's window by using JFrame as its
- * superclass, while making use of AppGraphics, AppInput, AppAudio. Furthermore, every application is a program that
+ * superclass, while making use of AppGraphics, KeyboardListener, AppAudio. Furthermore, every application is a program that
  * continuously loops until the window is closed, and so AppBase is responsible for continuously running GUIs, Controllers,
  * Mechanics, and Components from their respective Scheduler classes. Moreover, AppBase must be extended as the superclass
  * of App.java & AppContainer.java to return Controller instances, run app audio, and to determine the application's current
@@ -81,8 +81,8 @@ public class AppBase extends JFrame implements AppInterface
         super.setLocationRelativeTo(null);
         super.setVisible(true);
         
-        super.add(AppGraphics.getInstance());
-        super.addKeyListener(AppInput.getInstance().getKeyListener());
+        super.add(GraphicsRenderer.getInstance());
+        super.addKeyListener(KeyboardListener.getInstance().getKeyListener());
     }
 
     // Periodically called by app refresh rate (tick system)

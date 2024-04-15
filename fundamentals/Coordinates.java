@@ -23,13 +23,9 @@ public class Coordinates
 
     /**
     * A data structure that houses and describes the location of a component in the window of the application while on-screen. 
-    * 
-    * @see
-    * Note: Coordinates are relative to the point of origin located at the upper-left corner of an application's window, where going
+    * @see Degrees positively increase for clockwise rotations, and negatively for counter-clockwise rotations. 
+    * @see Coordinates are relative to the point of origin located at the upper-left corner of an application's window, where going
     * across the screen, from left to right, is the positive X-direction, and going up to down the screen is positive for the Y-direction.
-    * 
-    * @see
-    * Note: Degrees positively increase for clockwise rotations, and negatively for counter-clockwise rotations. 
     */
     public Coordinates(int x, int y, int degrees) {
         this.x = x;

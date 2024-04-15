@@ -31,8 +31,7 @@ public interface MechanicInterface
      * is finished running. The parameter can be used to write different algorithms in the method's definition to 
      * allow the method to behave differently based on if the method ended naturally, or if it was suddenly interrupted and canceled. 
      * 
-     * @param interrupted
-     * - Whether or not if the mechanic has been interrupted by a cancellation when finishing, or if the mechanic's
+     * @param interrupted (boolean) : Whether or not if the mechanic has been interrupted by a cancellation when finishing, or if the mechanic's
      * ending condition has been met, allowing it to end naturally. 
      * 
      * @see Calling MechanicBase's cancel() method will immediately put a scheduled and running mechanic to a halting stop.

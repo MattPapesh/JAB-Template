@@ -41,12 +41,12 @@ public class ComponentBase implements ComponentInterface
     public void addRequirements(int x, int y, int degrees, Animation... animations) {
         current_animation = animations[0];
         coordinates.setCoordinates(x, y, degrees);
-        for(int i = 0; i < animations.length; i++) {
-            this.animations.addLast(animations[i]);
+        for(var animation : animations) {
+            this.animations.addLast(animation);
         }
 
         toggleActivity(true);
-        ComponentScheduler.registerComponent(this);
+        ComponentRegistry.registerComponent(this);
         MechanicScheduler.getInstance().registerComponent(this);
     }
 
@@ -55,9 +55,9 @@ public class ComponentBase implements ComponentInterface
      * @see If the method is never called, the image belonging to the first Animation instance passed into the constructor will be used.
      */
     public void setAnimation(String animation_name) {
-        for(int i = 0; i < animations.size(); i++) {
-            if(animations.get(i).getName() == animation_name) {
-                current_animation = animations.get(i);
+        for(var animation : animations) {
+            if(animation.getName() == animation_name) {
+                current_animation = animation;
             }
         }
     }
@@ -90,11 +90,11 @@ public class ComponentBase implements ComponentInterface
     public void toggleActivity(boolean active) {
         if(!this.active && active) {
             this.active = true;
-            ComponentScheduler.registerComponent(this);
+            ComponentRegistry.registerComponent(this);
         }
         else if(this.active & !active) {
             this.active = false; 
-            ComponentScheduler.removeComponent(this);
+            ComponentRegistry.removeComponent(this);
         }
     }
 

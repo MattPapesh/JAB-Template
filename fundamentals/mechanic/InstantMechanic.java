@@ -1,5 +1,7 @@
 package fundamentals.mechanic;
 
+import java.util.function.Function;
+
 /**
  * A variation of MechanicBase, InstantMechanics are mechanics that when instantiated, require a lambda function
  * that will describe the mechanic's behavior. 
@@ -11,12 +13,7 @@ package fundamentals.mechanic;
  */
 public class InstantMechanic extends MechanicBase 
 {
-    private MechanicBehavior behavior = null;
-
-    @FunctionalInterface
-    public interface MechanicBehavior {
-        public void behavior();  
-    }
+    private Function<Void, Void> mechanic_def = null;
 
     /**
      * A variation of MechanicBase, InstantMechanics are mechanics that when instantiated, require a lambda function
@@ -26,13 +23,13 @@ public class InstantMechanic extends MechanicBase
      * is scheduled; this mechanic does not offer initializing, executing, or ending phases, and does not offer the use of an ending condition!
      * The lambda function is the entire mechanic. 
      */
-    public InstantMechanic(MechanicBehavior behavior) {
-        this.behavior = behavior;
+    public InstantMechanic(Function<Void, Void> mechanic_def) {
+        this.mechanic_def = mechanic_def;
     }
 
     @Override
     public void initialize() {
-        behavior.behavior();
+        mechanic_def.apply(null);
     }
 
     @Override

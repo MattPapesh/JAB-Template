@@ -22,10 +22,6 @@ public class MechanicScheduler
     private Vector<Function<Void, Void>> events = new Vector<Function<Void, Void>>();
     private static MechanicScheduler scheduler = new MechanicScheduler();
 
-    public static MechanicScheduler getInstance() {
-        return scheduler;
-    }
-
     /**
      * Schedules the specified mechanic. 
      * @param mechanic (MechanicBase) : The specified mechanic. 
@@ -114,5 +110,9 @@ public class MechanicScheduler
         for(var component : components) {
             component.periodic();
         }
+    }
+
+    public static MechanicScheduler getInstance() {
+        return scheduler;
     }
 }

@@ -22,7 +22,7 @@ public class Delay extends MechanicBase
      * @param millis (int) The unsigned amount of delay in milliseconds.
      * @param idle_mechanic (InstantMechanic) : The specified mechanic to schedule during the idle period. 
      * 
-     * @see Note: This mechanic is most useful when used within a SequentialMechanicGroup, causing delay between other sequentially scheduled
+     * @see This mechanic is most useful when used within a SequentialMechanicGroup, causing delay between other sequentially scheduled
      * mechanics used within the group. 
      */
     public Delay(int millis, InstantMechanic idle_mechanic) {
