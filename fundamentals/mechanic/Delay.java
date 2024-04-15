@@ -13,7 +13,6 @@ public class Delay extends MechanicBase
 {
     private double millis = 0;
     private double initial_millis = 0;
-    private double delta_millis = 0;
     private InstantMechanic idle_mechanic = null;
 
     /**

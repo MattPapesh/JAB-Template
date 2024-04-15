@@ -15,10 +15,12 @@ import fundamentals.component.ComponentScheduler;
  * list of registered Component instances onto the screen. 
  * 
  * @see Given that registered Components remain registered unless they are manually unregistered, all registered Components will
- * remain continuously being painted on-screen, allowing any changes they may undergo at any momement be reflected on-screen.  
+ * remain continuously being painted on-screen, allowing any changes they may undergo at any moment be reflected on-screen.  
  */
 public class AppGraphics extends JPanel 
 {
+    private static AppGraphics app_graphics = new AppGraphics();
+
     /**
      * AppGraphics is responsible for painting all Components onto the application's window with the use of the Graphics class, and
      * the Graphics instance passed into the overridden method, paintComponent(Graphics graphics), 
@@ -26,7 +28,7 @@ public class AppGraphics extends JPanel
      * list of registered Component instances onto the screen. 
      * 
      * @see Given that registered Components remain registered unless they are manually unregistered, all registered Components will
-     * remain continuously being painted on-screen, allowing any changes they may undergo at any momement be reflected on-screen.  
+     * remain continuously being painted on-screen, allowing any changes they may undergo at any moment be reflected on-screen.  
      */
     public AppGraphics() {}
 
@@ -57,5 +59,9 @@ public class AppGraphics extends JPanel
         }
 
         repaint();
+    }
+
+    public static AppGraphics getInstance() {
+        return app_graphics;
     }
 }

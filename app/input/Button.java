@@ -1,9 +1,6 @@
 package app.input;
 
-import java.util.LinkedList;
-
 import fundamentals.UI.Trigger;
-import fundamentals.mechanic.MechanicBase;
 
 /**
  * Used to determine the state of a button on a Controller instance, Button makes use of AppInput to read a specific keyboard key

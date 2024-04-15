@@ -6,14 +6,9 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 
 import app.AppGraphics;
-import app.audio.AppAudio;
 import app.input.AppInput;
 import fundamentals.Constants;
-import fundamentals.UI.Controller;
-import fundamentals.UI.GUI.GUI;
-import fundamentals.UI.GUI.GUIScheduler;
 import fundamentals.animation.Animation;
-import fundamentals.mechanic.MechanicBase;
 import fundamentals.mechanic.MechanicScheduler;
 
 /**
@@ -28,14 +23,8 @@ public class AppBase extends JFrame implements AppInterface
 {
     private LinkedList<Image> icons = new LinkedList<Image>();
     private int current_icon_index = 0;
-
-    private AppGraphics app_graphics = new AppGraphics();
-    private static AppInput app_input = new AppInput();
-    private static AppAudio app_audio = new AppAudio();
-
     private PrioritizedAppStatus prev_app_status = null;
     private PrioritizedAppStatus app_status = null;
-    
     private boolean determined_app_status = false;
 
     private interface PrioritizedAppStatus {
@@ -82,6 +71,7 @@ public class AppBase extends JFrame implements AppInterface
      */
     private void appBaseInit() {
         prepareAppIcon();
+        initiateAppStatus();
 
         super.setSize(Constants.WINDOW_CHARACTERISTICS.WINDOW_WIDTH, Constants.WINDOW_CHARACTERISTICS.WINDOW_HEIGHT);
         super.setResizable(false);
@@ -91,65 +81,8 @@ public class AppBase extends JFrame implements AppInterface
         super.setLocationRelativeTo(null);
         super.setVisible(true);
         
-        super.add(app_graphics);
-        super.addKeyListener(app_input.getKeyListener());
-    }
-
-    /**
-     * Plays the audio file passed in once. 
-     * @param file_name (String) : The specified name of the audio file to play. 
-     * @see Only WAV audio files are compatible. Example argument: "file.wav" 
-     */
-    public static void playAudioFile(String file_name) {
-        app_audio.playAudioFile(file_name);
-    }
-
-    /**
-     * Consecutively plays the audio file passed in as many times as described.  
-     * @param file_name (String) : The specified name of the audio file to play.
-     * @param count (int) : The unsigned amount of times to play the described audio file. 
-     * @see Only WAV audio files are compatible. Example argument: "file.wav"
-     */
-    public static void playAudioFileLoop(String file_name, int count) {
-        app_audio.playAudioFileLoop(file_name, Math.max(count, 0));
-    }
-
-    /**
-     * Consecutively plays the audio file passed continuously without stopping. 
-     * @param file_name (String) : The specified name of the audio file to play.
-     * @see Only WAV audio files are compatible. Example argument: "file.wav"
-     */
-    public static void playAudioFileLoopContinuously(String file_name) {
-        app_audio.playAudioFileLoopContinuously(file_name);
-    }
-
-    /**
-     * Immediately stops playing the audio file described. Moreover, if the audio file being stopped is being
-     * consecutively replayed on a loop, all future replays that have not yet occurred will be immediately 
-     * canceled. 
-     * 
-     * @param file_name (String) : The specified name of the audio file to stop.
-     * @see Only WAV audio files are compatible. Example argument: "file.wav"
-     */
-    public static void stopAudioFile(String file_name) {
-        app_audio.stopAudioFile(file_name);
-    }
-
-    /**
-     * Stops playing all currently-playing audio files and cancels any replays for audio files that are 
-     * being consecutively played on a loop. 
-     * 
-     * @see Only WAV audio files are compatible. Example argument: "file.wav"
-     */
-    public static void stopAllAudioFiles() {
-        app_audio.stopAllAudioFiles();
-    } 
-
-    private void runGUIs() {
-       // GUI GUI = GUIScheduler.getGUIInstance(); 
-        //for(int i = 0; GUI != null && i < GUI.getAmountOfOptions(); i++) {
-         //   GUI.getOptionInstance().run();
-       // }
+        super.add(AppGraphics.getInstance());
+        super.addKeyListener(AppInput.getInstance().getKeyListener());
     }
 
     // Periodically called by app refresh rate (tick system)
@@ -165,8 +98,6 @@ public class AppBase extends JFrame implements AppInterface
         MechanicScheduler.getInstance().runComponentPeriodics();
         MechanicScheduler.getInstance().runEvents();
         MechanicScheduler.getInstance().runMechanics();
-        
-        runGUIs();
     }
 
     /**
